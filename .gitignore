@@ -1,0 +1,9 @@
+#build
+[Oo]bj/
+[Bb]in/
+packages/
+TestResults/
+
+# Visual Studio
+.vs
+.vscode
