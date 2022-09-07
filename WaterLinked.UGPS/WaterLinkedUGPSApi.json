@@ -3020,8 +3020,7 @@
                 "status_group",
                 "status_group_id",
                 "status",
-                "message",
-                "error_ids"
+                "message"
             ]
         },
         "WlStatusGroupCollection": {
