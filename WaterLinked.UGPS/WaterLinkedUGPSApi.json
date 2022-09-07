@@ -1,1 +1,3213 @@
-{"swagger":"2.0","info":{"title":"The Water Linked Underwater GPS API","description":"API for the Water Linked Underwater GPS. For more details: http://www.waterlinked.com\n\nRecommended approach for connecting to a Underwater GPS via the API is:\n- If \"GET /api/\" times out, the Underwater GPS is not running (on this IP address)\n- If \"GET /api/\" responds with 200 OK check that the api version returrned (eg \"v1\") is supported by the client (eg: also supports \"v1\").\n- If the api version returned does not match what the client supports: give an error to the user and recommend upgrading. (Eg: response is \"v2\" while client only supports \"v1\")\n- If \"GET /api/\" responds with 301 Moved permanently. \"GET /api/v1/version\" to check if the kit has a version earlier than 1.5.\n- \"GET /api/v1/version\" will always respond with 200 OK on Underwater GPS earlier than 1.5 release.\n\nConfiguration API is is not considered stable and will potentially be changed","version":""},"host":"demo.waterlinked.com","schemes":["http"],"consumes":["application/json"],"produces":["application/json"],"paths":{"/api/":{"get":{"tags":["about"],"summary":"ApiVersion about","operationId":"about#ApiVersion","produces":["application/vnd.wupdater.apiversion"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WupdaterApiversion"}}},"schemes":["http"]}},"/api/v1/about":{"get":{"tags":["about"],"summary":"Get about","description":"Get about information","operationId":"about#Get","produces":["application/vnd.waterlinked.about+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedAbout"}}},"schemes":["http"]}},"/api/v1/about/factoryreset":{"post":{"tags":["about"],"summary":"FactoryReset about","description":"Reset all settings on master electronics","operationId":"about#FactoryReset","produces":["application/vnd.waterlinked.operation_response+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"404":{"description":"Not Found"},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"503":{"description":"Service Unavailable","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/about/led":{"get":{"tags":["about"],"summary":"LED about","description":"Flash LED1 on master electronics","operationId":"about#LED","produces":["text/plain"],"responses":{"200":{"description":"OK"},"404":{"description":"Not Found"}},"schemes":["http"]}},"/api/v1/about/status":{"get":{"tags":["about"],"summary":"Status about","description":"Get current IMU and GPS status","operationId":"about#Status","produces":["application/vnd.waterlinked.status+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedStatus"}}},"schemes":["http"]}},"/api/v1/about/temperature":{"get":{"tags":["about"],"summary":"Temperature about","description":"Get board temperature","operationId":"about#Temperature","produces":["application/vnd.waterlinked.temperature+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedTemperature"}}},"schemes":["http"]}},"/api/v1/config/antenna":{"get":{"tags":["config"],"summary":"GetAntennaConfig config","description":"Get Antenna configuration","operationId":"config#GetAntennaConfig","produces":["application/vnd.waterlinked.antenna_config+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedAntenna_config"}}},"schemes":["http"]},"put":{"tags":["config"],"summary":"ModifyAntennaConfig config","description":"Modify Antenna configuration","operationId":"config#ModifyAntennaConfig","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Configuration parameters for antenna set up","required":true,"schema":{"$ref":"#/definitions/ModifyAntennaConfigConfigPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"400":{"description":"Bad Request","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"503":{"description":"Service Unavailable","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/config/generic":{"get":{"tags":["config"],"summary":"Get config","description":"Get generic configuration","operationId":"config#Get","produces":["application/vnd.waterlinked.configuration+json","application/vnd.waterlinked.operation_response+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedConfiguration"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]},"put":{"tags":["config"],"summary":"Modify config","description":"Modify generic configuration","operationId":"config#Modify","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Configuration parameters","required":true,"schema":{"$ref":"#/definitions/ModifyConfigPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"400":{"description":"Bad Request","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"503":{"description":"Service Unavailable"}},"schemes":["http"]}},"/api/v1/config/ip":{"get":{"tags":["config"],"summary":"GetIP config","description":"Get IP configuration","operationId":"config#GetIP","produces":["application/vnd.waterlinked.ip_config+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedIp_config"}}},"schemes":["http"]},"put":{"tags":["config"],"summary":"ModifyIP config","description":"Modify IP configuration","operationId":"config#ModifyIP","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Configuration parameters","required":true,"schema":{"$ref":"#/definitions/ModifyIPConfigPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"400":{"description":"Bad Request","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"503":{"description":"Service Unavailable","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/config/receivers/":{"get":{"tags":["config"],"summary":"ListReceiver config","description":"(Re)Load current receiver settings and return them","operationId":"config#ListReceiver","produces":["application/vnd.waterlinked.receiver+json; type=collection"],"responses":{"200":{"description":"Returned list of receivers","schema":{"$ref":"#/definitions/WaterlinkedReceiverCollection"}}},"schemes":["http"]}},"/api/v1/config/receivers/{ID}":{"get":{"tags":["config"],"summary":"ShowReceiver config","description":"Get receiver configuration by id","operationId":"config#ShowReceiver","produces":["application/vnd.waterlinked.receiver+json"],"parameters":[{"name":"ID","in":"path","description":"Identifier","required":true,"type":"integer"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedReceiver"}},"404":{"description":"Not Found"}},"schemes":["http"]},"put":{"tags":["config"],"summary":"ModifyReceiver config","description":"Modify receiver configuration, does not apply the change until generic modify is called. Calling list will discard changes","operationId":"config#ModifyReceiver","parameters":[{"name":"ID","in":"path","description":"Identifier","required":true,"type":"integer"},{"name":"payload","in":"body","description":"A receiver configuration","required":true,"schema":{"$ref":"#/definitions/ModifyReceiverConfigPayload"}}],"responses":{"204":{"description":"No Content"},"404":{"description":"Not Found"}},"schemes":["http"]}},"/api/v1/config/wifi":{"get":{"tags":["config"],"summary":"GetWIFI config","description":"Get WIFI configuration","operationId":"config#GetWIFI","produces":["application/vnd.waterlinked.wifi_config+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedWifi_config"}}},"schemes":["http"]},"put":{"tags":["config"],"summary":"ModifyWIFI config","description":"Modify WIFI configuration","operationId":"config#ModifyWIFI","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Configuration parameters","required":true,"schema":{"$ref":"#/definitions/ModifyWIFIConfigPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"400":{"description":"Bad Request","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"503":{"description":"Service Unavailable","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/external/depth":{"put":{"tags":["external"],"summary":"SetDepth external","description":"Set depth from external source. If Locator A1 is used, this is required to get a position","operationId":"external#SetDepth","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Current locator depth and temperature","required":true,"schema":{"$ref":"#/definitions/SetDepthExternalPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/external/imu":{"get":{"tags":["external"],"summary":"GetVehicleIMU external","description":"[DEPRECATED]Get rotation and acceleration of vehicle Locator is mounted on which was previously set","operationId":"external#GetVehicleIMU","produces":["application/vnd.wl.external.vehicle.imu+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WlExternalVehicleImu"}},"204":{"description":"No Content"}},"schemes":["http"]},"put":{"tags":["external"],"summary":"SetVehicleIMU external","description":"[DEPRECATED]Set rotation and acceleration of vehicle Locator is mounted on. This is used to improve positioning of vehicle","operationId":"external#SetVehicleIMU","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Set current rotation and acceleration of vehicle","required":true,"schema":{"$ref":"#/definitions/SetVehicleIMUExternalPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/external/master":{"put":{"tags":["external"],"summary":"SetMaster external","description":"Set current global position of master electronics from external source. Values are only used if GPS mode is set to use external GPS","operationId":"external#SetMaster","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Global master position from external source","required":true,"schema":{"$ref":"#/definitions/SetMasterExternalPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/external/orientation":{"get":{"tags":["external"],"summary":"GetOrientation external","description":"Get orientation of Vehicle/ROV/Locator set by SetOrientation","operationId":"external#GetOrientation","produces":["application/vnd.waterlinked.operation_response+json","application/vnd.wl.external.locator.orientation+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WlExternalLocatorOrientation"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]},"put":{"tags":["external"],"summary":"SetOrientation external","description":"Set orientation/compass heading of Vehicle/ROV/Locator. This is used only for visualization in GUI","operationId":"external#SetOrientation","produces":["application/vnd.waterlinked.operation_response+json"],"parameters":[{"name":"payload","in":"body","description":"Set current compass heading of ROV/locator","required":true,"schema":{"$ref":"#/definitions/SetOrientationExternalPayload"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}},"/api/v1/imu/calibrate":{"get":{"tags":["imu"],"summary":"Get imu","description":"Get IMU status and orientation","operationId":"imu#Get","produces":["application/vnd.waterlinked.imu+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedImu"}}},"schemes":["http"]},"post":{"tags":["imu"],"summary":"Calibrate imu","description":"[DEPRECATED]Start calibration","operationId":"imu#Calibrate","produces":["text/plain"],"parameters":[{"name":"payload","in":"body","description":"IMU calibration action","required":true,"schema":{"$ref":"#/definitions/CalibrateImuPayload"}}],"responses":{"200":{"description":"OK"},"408":{"description":"Request Timeout"},"409":{"description":"Conflict"}},"schemes":["http"]}},"/api/v1/imu/resetgyros":{"post":{"tags":["imu"],"summary":"ResetGyro imu","description":"Reset Gyro","operationId":"imu#ResetGyro","produces":["text/plain"],"responses":{"200":{"description":"OK"},"408":{"description":"Request Timeout"},"409":{"description":"Conflict"}},"schemes":["http"]}},"/api/v1/imu/setnorth":{"post":{"tags":["imu"],"summary":"SetNorth imu","description":"Set north point","operationId":"imu#SetNorth","produces":["text/plain"],"parameters":[{"name":"payload","in":"body","description":"IMU set north","required":true,"schema":{"$ref":"#/definitions/SetNorthImuPayload"}}],"responses":{"200":{"description":"OK"},"400":{"description":"Bad Request"},"408":{"description":"Request Timeout"},"409":{"description":"Conflict"}},"schemes":["http"]}},"/api/v1/poi/":{"get":{"tags":["poi"],"summary":"List poi","description":"List all points of interest","operationId":"poi#List","produces":["application/vnd.waterlinked.poi+json; type=collection"],"responses":{"200":{"description":"Return list of all POIs","schema":{"$ref":"#/definitions/WaterlinkedPoiCollection"}},"404":{"description":"Not Found"}},"schemes":["http"]},"post":{"tags":["poi"],"summary":"Create poi","description":"Create a new POI","operationId":"poi#Create","produces":["application/vnd.goa.error"],"parameters":[{"name":"payload","in":"body","description":"A list of all POI","required":true,"schema":{"$ref":"#/definitions/CreatePoiPayload"}}],"responses":{"201":{"description":"Resource created","headers":{"Location":{"description":"href to created resource","type":"string","pattern":"^/poi/[0-9]+$"}}},"400":{"description":"Bad Request","schema":{"$ref":"#/definitions/error"}},"403":{"description":"Forbidden"}},"schemes":["http"]}},"/api/v1/poi/{ID}":{"get":{"tags":["poi"],"summary":"Show poi","description":"Get a POI","operationId":"poi#Show","produces":["application/vnd.waterlinked.poi+json"],"parameters":[{"name":"ID","in":"path","required":true,"type":"integer"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedPoi"}},"404":{"description":"Not Found"}},"schemes":["http"]},"delete":{"tags":["poi"],"summary":"Delete poi","operationId":"poi#Delete","produces":["application/vnd.goa.error"],"parameters":[{"name":"ID","in":"path","required":true,"type":"integer"}],"responses":{"204":{"description":"No Content"},"400":{"description":"Bad Request","schema":{"$ref":"#/definitions/error"}},"404":{"description":"Not Found"}},"schemes":["http"]},"patch":{"tags":["poi"],"summary":"Update poi","operationId":"poi#Update","produces":["application/vnd.goa.error"],"parameters":[{"name":"ID","in":"path","required":true,"type":"integer"},{"name":"payload","in":"body","description":"A list of all POI","required":true,"schema":{"$ref":"#/definitions/UpdatePoiPayload"}}],"responses":{"204":{"description":"No Content"},"400":{"description":"Bad Request","schema":{"$ref":"#/definitions/error"}},"404":{"description":"Not Found"}},"schemes":["http"]}},"/api/v1/position/acoustic/filtered":{"get":{"tags":["position"],"summary":"AcousticFiltered position","description":"Get current Kalman filtered acoustic position relative to master acoustics. Expected update frequency: 4 Hz","operationId":"position#AcousticFiltered","produces":["application/vnd.waterlinked.accoustic.position+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedAccousticPosition"}},"500":{"description":"Internal Server Error"}},"schemes":["http"]}},"/api/v1/position/acoustic/raw":{"get":{"tags":["position"],"summary":"AcousticRaw position","description":"Get current unfiltered acoustic position relative to master acoustics. Expected update frequency: 4 Hz","operationId":"position#AcousticRaw","produces":["application/vnd.waterlinked.accoustic.position+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WaterlinkedAccousticPosition"}},"500":{"description":"Internal Server Error"}},"schemes":["http"]}},"/api/v1/position/global":{"get":{"tags":["position"],"summary":"Get position","description":"Get current global position of locator. Locator position is calculated from the current acoustic position and the global position of the master electronics. Expected update frequency: 4 Hz","operationId":"position#Get","produces":["application/vnd.wl.satellite.position+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WlSatellitePosition"}},"500":{"description":"Internal Server Error"}},"schemes":["http"]}},"/api/v1/position/master":{"get":{"tags":["position"],"summary":"GetMaster position","description":"Get current global position of master electronics. Expected update frequency: 1 Hz","operationId":"position#GetMaster","produces":["application/vnd.wl.satellite.position+json"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WlSatellitePosition"}},"500":{"description":"Internal Server Error"}},"schemes":["http"]}},"/api/v1/status_report/":{"get":{"tags":["status_report"],"summary":"Get status_report","description":"Get list of status reports from all status groups","operationId":"status_report#Get","produces":["application/vnd.wl.status.group+json; type=collection"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WlStatusGroupCollection"}}},"schemes":["http"]}},"/api/v1/warnings/":{"get":{"tags":["warnings"],"summary":"Get warnings","description":"[DEPRECATED] Get current list of messages","operationId":"warnings#Get","produces":["application/vnd.waterlinked.operation_response+json","application/vnd.wl.warning+json; type=collection"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WlWarningCollection"}},"500":{"description":"Internal Server Error","schema":{"$ref":"#/definitions/WaterlinkedOperation_response"}}},"schemes":["http"]}}},"definitions":{"CalibrateImuPayload":{"title":"CalibrateImuPayload","type":"object","properties":{"action":{"type":"string","description":"IMU Calibration Action to use","example":"start","enum":["start","abort"]}},"description":"IMU calibration action","example":{"action":"start"},"required":["action"]},"CreatePoiPayload":{"title":"CreatePoiPayload","type":"object","properties":{"depth":{"type":"number","description":"Depth of POI","example":0.9848439086783396,"format":"double"},"icon":{"type":"string","description":"Icon of POI","example":"Ut molestias laboriosam."},"id":{"type":"integer","description":"Unique POI id","example":3408207428662661430,"format":"int64"},"lat":{"type":"number","description":"Latitude of POI","example":0.8147274904139097,"format":"double"},"lng":{"type":"number","description":"Longitude of POI","example":0.06472337355304676,"format":"double"},"name":{"type":"string","description":"Name of POI","example":"Reprehenderit non architecto quia."},"visible":{"type":"boolean","description":"Visibility of POI","example":false}},"description":"A list of all POI","example":{"depth":0.9848439086783396,"icon":"Ut molestias laboriosam.","id":3408207428662661430,"lat":0.8147274904139097,"lng":0.06472337355304676,"name":"Reprehenderit non architecto quia.","visible":false},"required":["name","lat","lng","depth","icon","visible"]},"ModifyAntennaConfigConfigPayload":{"title":"ModifyAntennaConfigConfigPayload","type":"object","properties":{"antenna_rotation":{"type":"integer","description":"Configured rotation of antenna relative to forward arrow on topside housing. Clockwise is positive direction (degrees)","example":90,"minimum":0,"maximum":360},"depth":{"type":"number","description":"Configured depth relative to surface (meter)","example":2,"minimum":0.1,"maximum":10},"x":{"type":"number","description":"Configured f position relative to master electronics (meter)","example":-2,"minimum":-100,"maximum":100},"y":{"type":"number","description":"Configured Y position relative to master electronics (meter)","example":2,"minimum":-100,"maximum":100}},"description":"Configuration parameters for antenna set up","example":{"antenna_rotation":90,"depth":2,"x":-2,"y":2},"required":["x","y","depth","antenna_rotation"]},"ModifyConfigPayload":{"title":"ModifyConfigPayload","type":"object","properties":{"antenna_enabled":{"type":"boolean","description":"Enable use of antenna","example":true},"channel":{"type":"integer","description":"Channel to use","example":13,"minimum":0,"maximum":6000},"compass":{"type":"string","description":"Compass provider setting","example":"external","enum":["onboard","static","external"]},"environment":{"type":"string","description":"[Deprecated] Environment setting","example":"openwater","enum":["reflective","openwater"]},"external_pps_enabled":{"type":"boolean","description":"Enable external PPS input to master","example":false},"gps":{"type":"string","description":"GPS provider setting","example":"external","enum":["onboard","static","external"]},"imu_vehicle_enabled":{"type":"boolean","description":"[Deprecated] Enable IMU input from vehicle","example":true},"locator_type":{"type":"string","description":"Locator type in use","example":"a1","enum":["d1","a1","s2","p2","u1"]},"range_max_x":{"type":"number","description":"[Deprecated] Max range (meters)","example":50,"minimum":0,"maximum":100},"range_max_y":{"type":"number","description":"[Deprecated] Max range (meters)","example":50,"minimum":0,"maximum":100},"range_max_z":{"type":"number","description":"[Deprecated] Max range (meters)","example":50,"minimum":0,"maximum":100},"range_min_x":{"type":"number","description":"[Deprecated] Max range (meters)","example":-50,"minimum":-100,"maximum":0},"range_min_y":{"type":"number","description":"[Deprecated] Max range (meters)","example":-50,"minimum":-100,"maximum":0},"search_direction":{"type":"number","description":"Direction of circular search area section","example":30,"minimum":0,"maximum":360},"search_radius":{"type":"number","description":"Radius of circular search area","example":150,"minimum":1,"maximum":300},"search_sector":{"type":"number","description":"Sector angle of circular search area","example":90,"minimum":1,"maximum":360},"speed_of_sound":{"type":"integer","description":"Speed of sound use by the system","example":1475,"minimum":1000,"maximum":2000},"static_lat":{"type":"number","description":"Latitude to use in static mode","example":63.422,"minimum":-90,"maximum":90},"static_lon":{"type":"number","description":"Longitude to use in static mode","example":10.424,"minimum":-180,"maximum":180},"static_orientation":{"type":"number","description":"Orientation/compass reading to use in static mode (degrees)","example":42,"minimum":0,"maximum":359}},"description":"Configuration parameters","example":{"antenna_enabled":true,"channel":13,"compass":"external","environment":"openwater","external_pps_enabled":false,"gps":"external","imu_vehicle_enabled":true,"locator_type":"a1","range_max_x":50,"range_max_y":50,"range_max_z":50,"range_min_x":-50,"range_min_y":-50,"search_direction":30,"search_radius":150,"search_sector":90,"speed_of_sound":1475,"static_lat":63.422,"static_lon":10.424,"static_orientation":42},"required":["channel","locator_type","gps","compass","static_lat","static_lon","static_orientation"]},"ModifyIPConfigPayload":{"title":"ModifyIPConfigPayload","type":"object","properties":{"address":{"type":"string","description":"IP address to use","example":"10.11.12.94"},"dhcp":{"type":"boolean","description":"DHCP to use","example":true},"dns":{"type":"string","description":"DNS to use","example":"10.11.12.1"},"gateway":{"type":"string","description":"Gateway to use","example":"10.11.12.1"},"prefix":{"type":"integer","description":"Prefix to use","example":24,"minimum":1,"maximum":31}},"description":"Configuration parameters","example":{"address":"10.11.12.94","dhcp":true,"dns":"10.11.12.1","gateway":"10.11.12.1","prefix":24},"required":["address","gateway","prefix","dns","dhcp"]},"ModifyReceiverConfigPayload":{"title":"ModifyReceiverConfigPayload","type":"object","properties":{"id":{"type":"integer","description":"Unique receiver identifier","example":2339264502380679921,"format":"int64"},"x":{"type":"number","description":"Configured X position relative to master electronics (meter)","example":0.0158212572962501,"format":"double"},"y":{"type":"number","description":"Configured Y position relative to master electronics (meter)","example":0.08142596921667565,"format":"double"},"z":{"type":"number","description":"Configured Z position relative to master electronics (meter)","example":0.34617068793186784,"format":"double"}},"description":"A receiver configuration","example":{"id":2339264502380679921,"x":0.0158212572962501,"y":0.08142596921667565,"z":0.34617068793186784},"required":["id","x","y","z"]},"ModifyWIFIConfigPayload":{"title":"ModifyWIFIConfigPayload","type":"object","properties":{"mode":{"type":"string","description":"Which mode should the WiFi be in?","example":"ap","enum":["ap","client"]},"password":{"type":"string","description":"Password to use for WiFi in Client mode","example":"10.11.12.1"},"ssid":{"type":"string","description":"WIFI SSID to use for WiFi in Client mode","example":"10.11.12.94"}},"description":"Configuration parameters","example":{"mode":"ap","password":"10.11.12.1","ssid":"10.11.12.94"},"required":["ssid","password","mode"]},"SetDepthExternalPayload":{"title":"SetDepthExternalPayload","type":"object","properties":{"depth":{"type":"number","description":"Curent depth (meter)","example":3.2,"minimum":0,"maximum":500},"temp":{"type":"number","description":"Current water temperature (C)","example":11.2,"minimum":-10,"maximum":60}},"description":"Current locator depth and temperature","example":{"depth":3.2,"temp":11.2},"required":["depth","temp"]},"SetMasterExternalPayload":{"title":"SetMasterExternalPayload","type":"object","properties":{"cog":{"type":"number","description":"Course over ground (degrees). -1 means no data.","example":42,"minimum":-1,"maximum":359.999},"fix_quality":{"type":"number","description":"Fix quality. 0 if no data.","example":1,"minimum":0},"hdop":{"type":"number","description":"Horizontal dilution of precision. -1 means no data.","example":1.9,"minimum":-1},"lat":{"type":"number","description":"Current Latitude","example":63.422,"minimum":-90,"maximum":90},"lon":{"type":"number","description":"Current Longitude","example":10.424,"minimum":-180,"maximum":180},"numsats":{"type":"number","description":"Number of satellites. -1 means no data.","example":11,"minimum":-1},"orientation":{"type":"number","description":"Current orientation/compass heading (degrees)","example":42,"minimum":0,"maximum":359.999},"sog":{"type":"number","description":"Speed over ground (km/h). -1 means no data.","example":0.5,"minimum":-1}},"description":"Global master position from external source","example":{"cog":42,"fix_quality":1,"hdop":1.9,"lat":63.422,"lon":10.424,"numsats":11,"orientation":42,"sog":0.5},"required":["lat","lon","orientation"]},"SetNorthImuPayload":{"title":"SetNorthImuPayload","type":"object","properties":{"heading":{"type":"number","description":"Current heading","example":50,"minimum":0,"maximum":360}},"description":"IMU set north","example":{"heading":50},"required":["heading"]},"SetOrientationExternalPayload":{"title":"SetOrientationExternalPayload","type":"object","properties":{"orientation":{"type":"number","description":"Current orientation/compass heading (degrees). -1 means no orientation set","example":42,"minimum":-1,"maximum":359.999}},"description":"Set current compass heading of ROV/locator","example":{"orientation":42},"required":["orientation"]},"SetVehicleIMUExternalPayload":{"title":"SetVehicleIMUExternalPayload","type":"object","properties":{"pitch":{"type":"number","description":"Current pitch of vehicle(degrees).","example":30,"minimum":-90,"maximum":90},"roll":{"type":"number","description":"Current roll of vehicle(degrees).","example":-30,"minimum":-180,"maximum":180},"x":{"type":"number","description":"Current acceleration in x-axis of vehicle.","example":10,"minimum":-20,"maximum":20},"y":{"type":"number","description":"Current acceleration in y-axis of vehicle.","example":-10,"minimum":-20,"maximum":20},"yaw":{"type":"number","description":"Current yaw of vehicle(degrees).","example":30,"minimum":-180,"maximum":180},"z":{"type":"number","description":"Current acceleration in z-axis of vehicle.","example":5,"minimum":-20,"maximum":20}},"description":"Set current rotation and acceleration of vehicle","example":{"pitch":30,"roll":-30,"x":10,"y":-10,"yaw":30,"z":5},"required":["pitch","roll","yaw","x","y","z"]},"UpdatePoiPayload":{"title":"UpdatePoiPayload","type":"object","properties":{"depth":{"type":"number","description":"Depth of POI","example":0.9848439086783396,"format":"double"},"icon":{"type":"string","description":"Icon of POI","example":"Ut molestias laboriosam."},"id":{"type":"integer","description":"Unique POI id","example":3408207428662661430,"format":"int64"},"lat":{"type":"number","description":"Latitude of POI","example":0.8147274904139097,"format":"double"},"lng":{"type":"number","description":"Longitude of POI","example":0.06472337355304676,"format":"double"},"name":{"type":"string","description":"Name of POI","example":"Reprehenderit non architecto quia."},"visible":{"type":"boolean","description":"Visibility of POI","example":false}},"description":"A list of all POI","example":{"depth":0.9848439086783396,"icon":"Ut molestias laboriosam.","id":3408207428662661430,"lat":0.8147274904139097,"lng":0.06472337355304676,"name":"Reprehenderit non architecto quia.","visible":false},"required":["name","lat","lng","depth","icon","visible"]},"WaterlinkedAbout":{"title":"Mediatype identifier: application/vnd.waterlinked.about+json; view=default","type":"object","properties":{"chipid":{"type":"string","description":"Chip identifier","example":"0x123456789"},"hardware_revision":{"type":"integer","description":"Hardware revision","example":1,"format":"int64"},"product_id":{"type":"integer","description":"Product ID","example":1,"format":"int64"},"product_name":{"type":"string","description":"Product name","example":"Underwater GPS"},"variant":{"type":"string","description":"Product variant","example":"standard"},"version":{"type":"string","description":"Detailed Web Server version string","example":"1.0.0 (abc.def)"},"version_short":{"type":"string","description":"Short Web Server version string","example":"1.0.0"}},"description":"About information (default view)","example":{"chipid":"0x123456789","hardware_revision":1,"product_id":1,"product_name":"Underwater GPS","variant":"standard","version":"1.0.0 (abc.def)","version_short":"1.0.0"},"required":["version","version_short","chipid","product_name","hardware_revision","product_id","variant"]},"WaterlinkedAccousticPosition":{"title":"Mediatype identifier: application/vnd.waterlinked.accoustic.position+json; view=default","type":"object","properties":{"position_valid":{"type":"boolean","description":"Is current position valid or not","example":true},"receiver_distance":{"type":"array","items":{"type":"number","example":0.4571247391045424,"format":"double"},"description":"Measured distance to the locator for each receiver","example":[0.4571247391045424,0.4571247391045424]},"receiver_nsd":{"type":"array","items":{"type":"number","example":0.748659470979663,"format":"double"},"description":"Measured NSD for each receiver","example":[0.748659470979663,0.748659470979663]},"receiver_rssi":{"type":"array","items":{"type":"number","example":0.8800592996534627,"format":"double"},"description":"Measured RSSI for each receiver","example":[0.8800592996534627,0.8800592996534627,0.8800592996534627]},"receiver_valid":{"type":"array","items":{"type":"number","example":0.768439233512868,"format":"double"},"description":"Is signal valid or not for each receiver","example":[0.768439233512868,0.768439233512868]},"std":{"type":"number","description":"Current acoustic position accuracy (meter)","example":0.5,"minimum":0},"x":{"type":"number","description":"Current acoustic x position relative to master electronics (meter)","example":32.1,"format":"double"},"y":{"type":"number","description":"Current acoustic y position relative to master electronics (meter)","example":11.2,"format":"double"},"z":{"type":"number","description":"Current acoustic z position (depth) relative to master electronics (meter)","example":10.2,"minimum":0}},"description":"Current relative Locator position (default view)","example":{"position_valid":true,"receiver_distance":[0.4571247391045424,0.4571247391045424],"receiver_nsd":[0.748659470979663,0.748659470979663],"receiver_rssi":[0.8800592996534627,0.8800592996534627,0.8800592996534627],"receiver_valid":[0.768439233512868,0.768439233512868],"std":0.5,"x":32.1,"y":11.2,"z":10.2},"required":["x","y","z","std","position_valid","receiver_distance","receiver_rssi","receiver_nsd","receiver_valid"]},"WaterlinkedAntenna_config":{"title":"Mediatype identifier: application/vnd.waterlinked.antenna_config+json; view=default","type":"object","properties":{"antenna_rotation":{"type":"integer","description":"Configured rotation of antenna relative to forward arrow on topside housing. Clockwise is positive direction (degrees)","example":90,"minimum":0,"maximum":360},"depth":{"type":"number","description":"Configured depth relative to surface (meter)","example":2,"minimum":0.1,"maximum":10},"x":{"type":"number","description":"Configured f position relative to master electronics (meter)","example":-2,"minimum":-100,"maximum":100},"y":{"type":"number","description":"Configured Y position relative to master electronics (meter)","example":2,"minimum":-100,"maximum":100}},"description":"Configuration parameters for antenna set up (default view)","example":{"antenna_rotation":90,"depth":2,"x":-2,"y":2},"required":["x","y","depth","antenna_rotation"]},"WaterlinkedConfiguration":{"title":"Mediatype identifier: application/vnd.waterlinked.configuration+json; view=default","type":"object","properties":{"antenna_enabled":{"type":"boolean","description":"Enable use of antenna","example":true},"channel":{"type":"integer","description":"Channel to use","example":13,"minimum":0,"maximum":6000},"compass":{"type":"string","description":"Compass provider setting","example":"external","enum":["onboard","static","external"]},"environment":{"type":"string","description":"[Deprecated] Environment setting","example":"openwater","enum":["reflective","openwater"]},"external_pps_enabled":{"type":"boolean","description":"Enable external PPS input to master","example":false},"gps":{"type":"string","description":"GPS provider setting","example":"external","enum":["onboard","static","external"]},"imu_vehicle_enabled":{"type":"boolean","description":"[Deprecated] Enable IMU input from vehicle","example":true},"locator_type":{"type":"string","description":"Locator type in use","example":"a1","enum":["d1","a1","s2","p2","u1"]},"range_max_x":{"type":"number","description":"[Deprecated] Max range (meters)","example":50,"minimum":0,"maximum":100},"range_max_y":{"type":"number","description":"[Deprecated] Max range (meters)","example":50,"minimum":0,"maximum":100},"range_max_z":{"type":"number","description":"[Deprecated] Max range (meters)","example":50,"minimum":0,"maximum":100},"range_min_x":{"type":"number","description":"[Deprecated] Max range (meters)","example":-50,"minimum":-100,"maximum":0},"range_min_y":{"type":"number","description":"[Deprecated] Max range (meters)","example":-50,"minimum":-100,"maximum":0},"search_direction":{"type":"number","description":"Direction of circular search area section","example":30,"minimum":0,"maximum":360},"search_radius":{"type":"number","description":"Radius of circular search area","example":150,"minimum":1,"maximum":300},"search_sector":{"type":"number","description":"Sector angle of circular search area","example":90,"minimum":1,"maximum":360},"speed_of_sound":{"type":"integer","description":"Speed of sound use by the system","example":1475,"minimum":1000,"maximum":2000},"static_lat":{"type":"number","description":"Latitude to use in static mode","example":63.422,"minimum":-90,"maximum":90},"static_lon":{"type":"number","description":"Longitude to use in static mode","example":10.424,"minimum":-180,"maximum":180},"static_orientation":{"type":"number","description":"Orientation/compass reading to use in static mode (degrees)","example":42,"minimum":0,"maximum":359}},"description":"Configuration parameters (default view)","example":{"antenna_enabled":true,"channel":13,"compass":"external","environment":"openwater","external_pps_enabled":false,"gps":"external","imu_vehicle_enabled":true,"locator_type":"a1","range_max_x":50,"range_max_y":50,"range_max_z":50,"range_min_x":-50,"range_min_y":-50,"search_direction":30,"search_radius":150,"search_sector":90,"speed_of_sound":1475,"static_lat":63.422,"static_lon":10.424,"static_orientation":42},"required":["channel","locator_type","gps","compass","static_lat","static_lon","static_orientation"]},"WaterlinkedImu":{"title":"Mediatype identifier: application/vnd.waterlinked.imu+json; view=default","type":"object","properties":{"pitch":{"type":"number","description":"Pitch","example":0,"minimum":0,"maximum":360},"progress":{"type":"integer","description":"Calibration progress","example":50,"minimum":0,"maximum":100},"roll":{"type":"number","description":"Roll","example":0,"minimum":0,"maximum":360},"state":{"type":"integer","description":"IMU calibration state. 0=running, 1=calibrating","example":0,"minimum":0,"maximum":3},"yaw":{"type":"number","description":"Yaw","example":0,"minimum":0,"maximum":360}},"description":"IMU status and orientation information (default view)","example":{"pitch":0,"progress":50,"roll":0,"state":0,"yaw":0},"required":["roll","pitch","yaw","state","progress"]},"WaterlinkedIp_config":{"title":"Mediatype identifier: application/vnd.waterlinked.ip_config+json; view=default","type":"object","properties":{"address":{"type":"string","description":"IP address to use","example":"10.11.12.94"},"dhcp":{"type":"boolean","description":"DHCP to use","example":true},"dns":{"type":"string","description":"DNS to use","example":"10.11.12.1"},"gateway":{"type":"string","description":"Gateway to use","example":"10.11.12.1"},"prefix":{"type":"integer","description":"Prefix to use","example":24,"minimum":1,"maximum":31}},"description":"Configuration parameters (default view)","example":{"address":"10.11.12.94","dhcp":true,"dns":"10.11.12.1","gateway":"10.11.12.1","prefix":24},"required":["address","gateway","prefix","dns","dhcp"]},"WaterlinkedOperation_response":{"title":"Mediatype identifier: application/vnd.waterlinked.operation_response+json; view=default","type":"object","properties":{"error":{"type":"string","description":"Error if it occurs","example":"something went wrong"},"success":{"type":"boolean","description":"Status of operation","example":false}},"description":"Response from server on operations performed (default view)","example":{"error":"something went wrong","success":false},"required":["success"]},"WaterlinkedPoi":{"title":"Mediatype identifier: application/vnd.waterlinked.poi+json; view=default","type":"object","properties":{"depth":{"type":"number","description":"Depth of POI","example":0.9848439086783396,"format":"double"},"icon":{"type":"string","description":"Icon of POI","example":"Ut molestias laboriosam."},"id":{"type":"integer","description":"Unique POI id","example":3408207428662661430,"format":"int64"},"lat":{"type":"number","description":"Latitude of POI","example":0.8147274904139097,"format":"double"},"lng":{"type":"number","description":"Longitude of POI","example":0.06472337355304676,"format":"double"},"name":{"type":"string","description":"Name of POI","example":"Reprehenderit non architecto quia."},"visible":{"type":"boolean","description":"Visibility of POI","example":false}},"description":"A list of all POI (default view)","example":{"depth":0.9848439086783396,"icon":"Ut molestias laboriosam.","id":3408207428662661430,"lat":0.8147274904139097,"lng":0.06472337355304676,"name":"Reprehenderit non architecto quia.","visible":false},"required":["name","lat","lng","depth","icon","visible"]},"WaterlinkedPoiCollection":{"title":"Mediatype identifier: application/vnd.waterlinked.poi+json; type=collection; view=default","type":"array","items":{"$ref":"#/definitions/WaterlinkedPoi"},"description":"WaterlinkedPoiCollection is the media type for an array of WaterlinkedPoi (default view)","example":[{"depth":0.9848439086783396,"icon":"Ut molestias laboriosam.","id":3408207428662661430,"lat":0.8147274904139097,"lng":0.06472337355304676,"name":"Reprehenderit non architecto quia.","visible":false},{"depth":0.9848439086783396,"icon":"Ut molestias laboriosam.","id":3408207428662661430,"lat":0.8147274904139097,"lng":0.06472337355304676,"name":"Reprehenderit non architecto quia.","visible":false}]},"WaterlinkedReceiver":{"title":"Mediatype identifier: application/vnd.waterlinked.receiver+json; view=default","type":"object","properties":{"id":{"type":"integer","description":"Unique receiver identifier","example":2339264502380679921,"format":"int64"},"x":{"type":"number","description":"Configured X position relative to master electronics (meter)","example":0.0158212572962501,"format":"double"},"y":{"type":"number","description":"Configured Y position relative to master electronics (meter)","example":0.08142596921667565,"format":"double"},"z":{"type":"number","description":"Configured Z position relative to master electronics (meter)","example":0.34617068793186784,"format":"double"}},"description":"A receiver configuration (default view)","example":{"id":2339264502380679921,"x":0.0158212572962501,"y":0.08142596921667565,"z":0.34617068793186784},"required":["id","x","y","z"]},"WaterlinkedReceiverCollection":{"title":"Mediatype identifier: application/vnd.waterlinked.receiver+json; type=collection; view=default","type":"array","items":{"$ref":"#/definitions/WaterlinkedReceiver"},"description":"WaterlinkedReceiverCollection is the media type for an array of WaterlinkedReceiver (default view)","example":[{"id":2339264502380679921,"x":0.0158212572962501,"y":0.08142596921667565,"z":0.34617068793186784},{"id":2339264502380679921,"x":0.0158212572962501,"y":0.08142596921667565,"z":0.34617068793186784},{"id":2339264502380679921,"x":0.0158212572962501,"y":0.08142596921667565,"z":0.34617068793186784}]},"WaterlinkedStatus":{"title":"Mediatype identifier: application/vnd.waterlinked.status+json; view=default","type":"object","properties":{"battery":{"type":"integer","description":"Locator battery level in percent. -1 if not available or applicable","example":90,"minimum":-1,"maximum":100},"gps":{"type":"integer","description":"GPS lock status","example":2,"minimum":0,"maximum":3},"imu":{"type":"integer","description":"IMU calibration status","example":2,"minimum":0,"maximum":3}},"description":"Status information (default view)","example":{"battery":90,"gps":2,"imu":2},"required":["imu","gps","battery"]},"WaterlinkedTemperature":{"title":"Mediatype identifier: application/vnd.waterlinked.temperature+json; view=default","type":"object","properties":{"board":{"type":"number","description":"Board temperature (C)","example":37,"format":"double"},"water":{"type":"number","description":"Water temperature (C)","example":10,"format":"double"}},"description":"Temperature information (default view)","example":{"board":37,"water":10},"required":["board","water"]},"WaterlinkedWifi_config":{"title":"Mediatype identifier: application/vnd.waterlinked.wifi_config+json; view=default","type":"object","properties":{"mode":{"type":"string","description":"Which mode should the WiFi be in?","example":"ap","enum":["ap","client"]},"password":{"type":"string","description":"Password to use for WiFi in Client mode","example":"10.11.12.1"},"ssid":{"type":"string","description":"WIFI SSID to use for WiFi in Client mode","example":"10.11.12.94"}},"description":"Configuration parameters (default view)","example":{"mode":"ap","password":"10.11.12.1","ssid":"10.11.12.94"},"required":["ssid","password","mode"]},"WlExternalLocatorOrientation":{"title":"Mediatype identifier: application/vnd.wl.external.locator.orientation+json; view=default","type":"object","properties":{"orientation":{"type":"number","description":"Current orientation/compass heading (degrees). -1 means no orientation set","example":42,"minimum":-1,"maximum":359.999}},"description":"Set current compass heading of ROV/locator (default view)","example":{"orientation":42},"required":["orientation"]},"WlExternalVehicleImu":{"title":"Mediatype identifier: application/vnd.wl.external.vehicle.imu+json; view=default","type":"object","properties":{"pitch":{"type":"number","description":"Current pitch of vehicle(degrees).","example":30,"minimum":-90,"maximum":90},"roll":{"type":"number","description":"Current roll of vehicle(degrees).","example":-30,"minimum":-180,"maximum":180},"x":{"type":"number","description":"Current acceleration in x-axis of vehicle.","example":10,"minimum":-20,"maximum":20},"y":{"type":"number","description":"Current acceleration in y-axis of vehicle.","example":-10,"minimum":-20,"maximum":20},"yaw":{"type":"number","description":"Current yaw of vehicle(degrees).","example":30,"minimum":-180,"maximum":180},"z":{"type":"number","description":"Current acceleration in z-axis of vehicle.","example":5,"minimum":-20,"maximum":20}},"description":"Set current rotation and acceleration of vehicle (default view)","example":{"pitch":30,"roll":-30,"x":10,"y":-10,"yaw":30,"z":5},"required":["pitch","roll","yaw","x","y","z"]},"WlSatellitePosition":{"title":"Mediatype identifier: application/vnd.wl.satellite.position+json; view=default","type":"object","properties":{"cog":{"type":"number","description":"Course over ground (degrees). -1 means no data.","example":42,"minimum":-1,"maximum":359.999},"fix_quality":{"type":"number","description":"Fix quality. 0 if no data.","example":1,"minimum":0},"hdop":{"type":"number","description":"Horizontal dilution of precision. -1 means no data.","example":1.9,"minimum":-1},"lat":{"type":"number","description":"Current Latitude","example":63.422,"minimum":-90,"maximum":90},"lon":{"type":"number","description":"Current Longitude","example":10.424,"minimum":-180,"maximum":180},"numsats":{"type":"number","description":"Number of satellites. -1 means no data.","example":11,"minimum":-1},"orientation":{"type":"number","description":"Current orientation/compass heading (degrees). -1 means no data.","example":42,"minimum":-1,"maximum":359.999},"sog":{"type":"number","description":"Speed over ground (km/h). -1 means no data.","example":0.5,"minimum":-1}},"description":"GPS and IMU position (default view)","example":{"cog":42,"fix_quality":1,"hdop":1.9,"lat":63.422,"lon":10.424,"numsats":11,"orientation":42,"sog":0.5},"required":["lat","lon","orientation","cog","sog","hdop","numsats","fix_quality"]},"WlStatusGroup":{"title":"Mediatype identifier: application/vnd.wl.status.group+json; view=default","type":"object","properties":{"error_ids":{"type":"array","items":{"type":"string","example":"Quasi itaque nemo dolorem ea molestias."},"description":"Identifiers for warnings/errors","example":["Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias."]},"message":{"type":"string","description":"Message","example":"Nihil sit qui."},"status":{"type":"string","description":"Status","example":"warning","enum":["ok","warning","error"]},"status_group":{"type":"string","description":"Status group friendly name","example":"Temporibus omnis dolor saepe quam."},"status_group_id":{"type":"string","description":"Status group identifier","example":"Distinctio qui."}},"description":"Current status from one specific status group (default view)","example":{"error_ids":["Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias."],"message":"Nihil sit qui.","status":"warning","status_group":"Temporibus omnis dolor saepe quam.","status_group_id":"Distinctio qui."},"required":["status_group","status_group_id","status","message","error_ids"]},"WlStatusGroupCollection":{"title":"Mediatype identifier: application/vnd.wl.status.group+json; type=collection; view=default","type":"array","items":{"$ref":"#/definitions/WlStatusGroup"},"description":"WlStatusGroupCollection is the media type for an array of WlStatusGroup (default view)","example":[{"error_ids":["Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias."],"message":"Nihil sit qui.","status":"warning","status_group":"Temporibus omnis dolor saepe quam.","status_group_id":"Distinctio qui."},{"error_ids":["Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias.","Quasi itaque nemo dolorem ea molestias."],"message":"Nihil sit qui.","status":"warning","status_group":"Temporibus omnis dolor saepe quam.","status_group_id":"Distinctio qui."}]},"WlWarning":{"title":"Mediatype identifier: application/vnd.wl.warning+json; view=default","type":"object","properties":{"id":{"type":"string","description":"Identifier","example":"Cupiditate et laboriosam."},"message":{"type":"string","description":"Message","example":"Non illo dolor illo facilis nihil nemo."},"severity":{"type":"string","description":"Severity","example":"Facilis sed animi distinctio praesentium."}},"description":"Warning message (default view)","example":{"id":"Cupiditate et laboriosam.","message":"Non illo dolor illo facilis nihil nemo.","severity":"Facilis sed animi distinctio praesentium."},"required":["id","message","severity"]},"WlWarningCollection":{"title":"Mediatype identifier: application/vnd.wl.warning+json; type=collection; view=default","type":"array","items":{"$ref":"#/definitions/WlWarning"},"description":"WlWarningCollection is the media type for an array of WlWarning (default view)","example":[{"id":"Cupiditate et laboriosam.","message":"Non illo dolor illo facilis nihil nemo.","severity":"Facilis sed animi distinctio praesentium."},{"id":"Cupiditate et laboriosam.","message":"Non illo dolor illo facilis nihil nemo.","severity":"Facilis sed animi distinctio praesentium."}]},"WupdaterApiversion":{"title":"Mediatype identifier: application/vnd.wupdater.apiversion; view=default","type":"object","properties":{"versions":{"type":"array","items":{"type":"string","example":"Dicta rem tenetur commodi eum."},"description":"Supported api versions","example":["v1","v2"]}},"description":"Returns supported api versions (default view)","example":{"versions":["v1","v2"]},"required":["versions"]},"error":{"title":"Mediatype identifier: application/vnd.goa.error; view=default","type":"object","properties":{"code":{"type":"string","description":"an application-specific error code, expressed as a string value.","example":"invalid_value"},"detail":{"type":"string","description":"a human-readable explanation specific to this occurrence of the problem.","example":"Value of ID must be an integer"},"id":{"type":"string","description":"a unique identifier for this particular occurrence of the problem.","example":"3F1FKVRR"},"meta":{"type":"object","description":"a meta object containing non-standard meta-information about the error.","example":{"timestamp":1458609066},"additionalProperties":true},"status":{"type":"string","description":"the HTTP status code applicable to this problem, expressed as a string value.","example":"400"}},"description":"Error response media type (default view)","example":{"code":"invalid_value","detail":"Value of ID must be an integer","id":"3F1FKVRR","meta":{"timestamp":1458609066},"status":"400"}}},"responses":{"BadRequest":{"description":"Bad Request"},"Conflict":{"description":"Conflict"},"Forbidden":{"description":"Forbidden"},"InternalServerError":{"description":"Internal Server Error"},"NoContent":{"description":"No Content"},"NotFound":{"description":"Not Found"},"OK":{"description":"OK"},"RequestTimeout":{"description":"Request Timeout"},"ServiceUnavailable":{"description":"Service Unavailable"}}}
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "The Water Linked Underwater GPS API",
+        "description": "API for the Water Linked Underwater GPS. For more details: http://www.waterlinked.com\n\nRecommended approach for connecting to a Underwater GPS via the API is:\n- If \"GET /api/\" times out, the Underwater GPS is not running (on this IP address)\n- If \"GET /api/\" responds with 200 OK check that the api version returrned (eg \"v1\") is supported by the client (eg: also supports \"v1\").\n- If the api version returned does not match what the client supports: give an error to the user and recommend upgrading. (Eg: response is \"v2\" while client only supports \"v1\")\n- If \"GET /api/\" responds with 301 Moved permanently. \"GET /api/v1/version\" to check if the kit has a version earlier than 1.5.\n- \"GET /api/v1/version\" will always respond with 200 OK on Underwater GPS earlier than 1.5 release.\n\nConfiguration API is is not considered stable and will potentially be changed",
+        "version": ""
+    },
+    "host": "demo.waterlinked.com",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/": {
+            "get": {
+                "tags": [
+                    "about"
+                ],
+                "summary": "ApiVersion about",
+                "operationId": "about#ApiVersion",
+                "produces": [
+                    "application/vnd.wupdater.apiversion"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WupdaterApiversion"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/about": {
+            "get": {
+                "tags": [
+                    "about"
+                ],
+                "summary": "Get about",
+                "description": "Get about information",
+                "operationId": "about#Get",
+                "produces": [
+                    "application/vnd.waterlinked.about+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedAbout"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/about/factoryreset": {
+            "post": {
+                "tags": [
+                    "about"
+                ],
+                "summary": "FactoryReset about",
+                "description": "Reset all settings on master electronics",
+                "operationId": "about#FactoryReset",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/about/led": {
+            "get": {
+                "tags": [
+                    "about"
+                ],
+                "summary": "LED about",
+                "description": "Flash LED1 on master electronics",
+                "operationId": "about#LED",
+                "produces": [
+                    "text/plain"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/about/status": {
+            "get": {
+                "tags": [
+                    "about"
+                ],
+                "summary": "Status about",
+                "description": "Get current IMU and GPS status",
+                "operationId": "about#Status",
+                "produces": [
+                    "application/vnd.waterlinked.status+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedStatus"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/about/temperature": {
+            "get": {
+                "tags": [
+                    "about"
+                ],
+                "summary": "Temperature about",
+                "description": "Get board temperature",
+                "operationId": "about#Temperature",
+                "produces": [
+                    "application/vnd.waterlinked.temperature+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedTemperature"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/config/antenna": {
+            "get": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "GetAntennaConfig config",
+                "description": "Get Antenna configuration",
+                "operationId": "config#GetAntennaConfig",
+                "produces": [
+                    "application/vnd.waterlinked.antenna_config+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedAntenna_config"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "ModifyAntennaConfig config",
+                "description": "Modify Antenna configuration",
+                "operationId": "config#ModifyAntennaConfig",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Configuration parameters for antenna set up",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ModifyAntennaConfigConfigPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/config/generic": {
+            "get": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "Get config",
+                "description": "Get generic configuration",
+                "operationId": "config#Get",
+                "produces": [
+                    "application/vnd.waterlinked.configuration+json",
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedConfiguration"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "Modify config",
+                "description": "Modify generic configuration",
+                "operationId": "config#Modify",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Configuration parameters",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ModifyConfigPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/config/ip": {
+            "get": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "GetIP config",
+                "description": "Get IP configuration",
+                "operationId": "config#GetIP",
+                "produces": [
+                    "application/vnd.waterlinked.ip_config+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedIp_config"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "ModifyIP config",
+                "description": "Modify IP configuration",
+                "operationId": "config#ModifyIP",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Configuration parameters",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ModifyIPConfigPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/config/receivers/": {
+            "get": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "ListReceiver config",
+                "description": "(Re)Load current receiver settings and return them",
+                "operationId": "config#ListReceiver",
+                "produces": [
+                    "application/vnd.waterlinked.receiver+json; type=collection"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returned list of receivers",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedReceiverCollection"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/config/receivers/{ID}": {
+            "get": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "ShowReceiver config",
+                "description": "Get receiver configuration by id",
+                "operationId": "config#ShowReceiver",
+                "produces": [
+                    "application/vnd.waterlinked.receiver+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "description": "Identifier",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedReceiver"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "ModifyReceiver config",
+                "description": "Modify receiver configuration, does not apply the change until generic modify is called. Calling list will discard changes",
+                "operationId": "config#ModifyReceiver",
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "description": "Identifier",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "A receiver configuration",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ModifyReceiverConfigPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/config/wifi": {
+            "get": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "GetWIFI config",
+                "description": "Get WIFI configuration",
+                "operationId": "config#GetWIFI",
+                "produces": [
+                    "application/vnd.waterlinked.wifi_config+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedWifi_config"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "config"
+                ],
+                "summary": "ModifyWIFI config",
+                "description": "Modify WIFI configuration",
+                "operationId": "config#ModifyWIFI",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Configuration parameters",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ModifyWIFIConfigPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/external/depth": {
+            "put": {
+                "tags": [
+                    "external"
+                ],
+                "summary": "SetDepth external",
+                "description": "Set depth from external source. If Locator A1 is used, this is required to get a position",
+                "operationId": "external#SetDepth",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Current locator depth and temperature",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetDepthExternalPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/external/imu": {
+            "get": {
+                "tags": [
+                    "external"
+                ],
+                "summary": "GetVehicleIMU external",
+                "description": "[DEPRECATED]Get rotation and acceleration of vehicle Locator is mounted on which was previously set",
+                "operationId": "external#GetVehicleIMU",
+                "produces": [
+                    "application/vnd.wl.external.vehicle.imu+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WlExternalVehicleImu"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "external"
+                ],
+                "summary": "SetVehicleIMU external",
+                "description": "[DEPRECATED]Set rotation and acceleration of vehicle Locator is mounted on. This is used to improve positioning of vehicle",
+                "operationId": "external#SetVehicleIMU",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Set current rotation and acceleration of vehicle",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetVehicleIMUExternalPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/external/master": {
+            "put": {
+                "tags": [
+                    "external"
+                ],
+                "summary": "SetMaster external",
+                "description": "Set current global position of master electronics from external source. Values are only used if GPS mode is set to use external GPS",
+                "operationId": "external#SetMaster",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Global master position from external source",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetMasterExternalPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/external/orientation": {
+            "get": {
+                "tags": [
+                    "external"
+                ],
+                "summary": "GetOrientation external",
+                "description": "Get orientation of Vehicle/ROV/Locator set by SetOrientation",
+                "operationId": "external#GetOrientation",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json",
+                    "application/vnd.wl.external.locator.orientation+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WlExternalLocatorOrientation"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "put": {
+                "tags": [
+                    "external"
+                ],
+                "summary": "SetOrientation external",
+                "description": "Set orientation/compass heading of Vehicle/ROV/Locator. This is used only for visualization in GUI",
+                "operationId": "external#SetOrientation",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Set current compass heading of ROV/locator",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetOrientationExternalPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/imu/calibrate": {
+            "get": {
+                "tags": [
+                    "imu"
+                ],
+                "summary": "Get imu",
+                "description": "Get IMU status and orientation",
+                "operationId": "imu#Get",
+                "produces": [
+                    "application/vnd.waterlinked.imu+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedImu"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "post": {
+                "tags": [
+                    "imu"
+                ],
+                "summary": "Calibrate imu",
+                "description": "[DEPRECATED]Start calibration",
+                "operationId": "imu#Calibrate",
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "IMU calibration action",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CalibrateImuPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "408": {
+                        "description": "Request Timeout"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/imu/resetgyros": {
+            "post": {
+                "tags": [
+                    "imu"
+                ],
+                "summary": "ResetGyro imu",
+                "description": "Reset Gyro",
+                "operationId": "imu#ResetGyro",
+                "produces": [
+                    "text/plain"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "408": {
+                        "description": "Request Timeout"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/imu/setnorth": {
+            "post": {
+                "tags": [
+                    "imu"
+                ],
+                "summary": "SetNorth imu",
+                "description": "Set north point",
+                "operationId": "imu#SetNorth",
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "IMU set north",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetNorthImuPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "408": {
+                        "description": "Request Timeout"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/poi/": {
+            "get": {
+                "tags": [
+                    "poi"
+                ],
+                "summary": "List poi",
+                "description": "List all points of interest",
+                "operationId": "poi#List",
+                "produces": [
+                    "application/vnd.waterlinked.poi+json; type=collection"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return list of all POIs",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedPoiCollection"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "post": {
+                "tags": [
+                    "poi"
+                ],
+                "summary": "Create poi",
+                "description": "Create a new POI",
+                "operationId": "poi#Create",
+                "produces": [
+                    "application/vnd.goa.error"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "A list of all POI",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreatePoiPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Resource created",
+                        "headers": {
+                            "Location": {
+                                "description": "href to created resource",
+                                "type": "string",
+                                "pattern": "^/poi/[0-9]+$"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/poi/{ID}": {
+            "get": {
+                "tags": [
+                    "poi"
+                ],
+                "summary": "Show poi",
+                "description": "Get a POI",
+                "operationId": "poi#Show",
+                "produces": [
+                    "application/vnd.waterlinked.poi+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedPoi"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "poi"
+                ],
+                "summary": "Delete poi",
+                "operationId": "poi#Delete",
+                "produces": [
+                    "application/vnd.goa.error"
+                ],
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "poi"
+                ],
+                "summary": "Update poi",
+                "operationId": "poi#Update",
+                "produces": [
+                    "application/vnd.goa.error"
+                ],
+                "parameters": [
+                    {
+                        "name": "ID",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "A list of all POI",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdatePoiPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/position/acoustic/filtered": {
+            "get": {
+                "tags": [
+                    "position"
+                ],
+                "summary": "AcousticFiltered position",
+                "description": "Get current Kalman filtered acoustic position relative to master acoustics. Expected update frequency: 4 Hz",
+                "operationId": "position#AcousticFiltered",
+                "produces": [
+                    "application/vnd.waterlinked.accoustic.position+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedAccousticPosition"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/position/acoustic/raw": {
+            "get": {
+                "tags": [
+                    "position"
+                ],
+                "summary": "AcousticRaw position",
+                "description": "Get current unfiltered acoustic position relative to master acoustics. Expected update frequency: 4 Hz",
+                "operationId": "position#AcousticRaw",
+                "produces": [
+                    "application/vnd.waterlinked.accoustic.position+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedAccousticPosition"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/position/global": {
+            "get": {
+                "tags": [
+                    "position"
+                ],
+                "summary": "Get position",
+                "description": "Get current global position of locator. Locator position is calculated from the current acoustic position and the global position of the master electronics. Expected update frequency: 4 Hz",
+                "operationId": "position#Get",
+                "produces": [
+                    "application/vnd.wl.satellite.position+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WlSatellitePosition"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/position/master": {
+            "get": {
+                "tags": [
+                    "position"
+                ],
+                "summary": "GetMaster position",
+                "description": "Get current global position of master electronics. Expected update frequency: 1 Hz",
+                "operationId": "position#GetMaster",
+                "produces": [
+                    "application/vnd.wl.satellite.position+json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WlSatellitePosition"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/status_report/": {
+            "get": {
+                "tags": [
+                    "status_report"
+                ],
+                "summary": "Get status_report",
+                "description": "Get list of status reports from all status groups",
+                "operationId": "status_report#Get",
+                "produces": [
+                    "application/vnd.wl.status.group+json; type=collection"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WlStatusGroupCollection"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        },
+        "/api/v1/warnings/": {
+            "get": {
+                "tags": [
+                    "warnings"
+                ],
+                "summary": "Get warnings",
+                "description": "[DEPRECATED] Get current list of messages",
+                "operationId": "warnings#Get",
+                "produces": [
+                    "application/vnd.waterlinked.operation_response+json",
+                    "application/vnd.wl.warning+json; type=collection"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/WlWarningCollection"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/WaterlinkedOperation_response"
+                        }
+                    }
+                },
+                "schemes": [
+                    "http"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "CalibrateImuPayload": {
+            "title": "CalibrateImuPayload",
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "description": "IMU Calibration Action to use",
+                    "example": "start",
+                    "enum": [
+                        "start",
+                        "abort"
+                    ]
+                }
+            },
+            "description": "IMU calibration action",
+            "example": {
+                "action": "start"
+            },
+            "required": [
+                "action"
+            ]
+        },
+        "CreatePoiPayload": {
+            "title": "CreatePoiPayload",
+            "type": "object",
+            "properties": {
+                "depth": {
+                    "type": "number",
+                    "description": "Depth of POI",
+                    "example": 0.9848439086783396,
+                    "format": "double"
+                },
+                "icon": {
+                    "type": "string",
+                    "description": "Icon of POI",
+                    "example": "Ut molestias laboriosam."
+                },
+                "id": {
+                    "type": "integer",
+                    "description": "Unique POI id",
+                    "example": 3408207428662661430,
+                    "format": "int64"
+                },
+                "lat": {
+                    "type": "number",
+                    "description": "Latitude of POI",
+                    "example": 0.8147274904139097,
+                    "format": "double"
+                },
+                "lng": {
+                    "type": "number",
+                    "description": "Longitude of POI",
+                    "example": 0.06472337355304676,
+                    "format": "double"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of POI",
+                    "example": "Reprehenderit non architecto quia."
+                },
+                "visible": {
+                    "type": "boolean",
+                    "description": "Visibility of POI",
+                    "example": false
+                }
+            },
+            "description": "A list of all POI",
+            "example": {
+                "depth": 0.9848439086783396,
+                "icon": "Ut molestias laboriosam.",
+                "id": 3408207428662661430,
+                "lat": 0.8147274904139097,
+                "lng": 0.06472337355304676,
+                "name": "Reprehenderit non architecto quia.",
+                "visible": false
+            },
+            "required": [
+                "name",
+                "lat",
+                "lng",
+                "depth",
+                "icon",
+                "visible"
+            ]
+        },
+        "ModifyAntennaConfigConfigPayload": {
+            "title": "ModifyAntennaConfigConfigPayload",
+            "type": "object",
+            "properties": {
+                "antenna_rotation": {
+                    "type": "integer",
+                    "description": "Configured rotation of antenna relative to forward arrow on topside housing. Clockwise is positive direction (degrees)",
+                    "example": 90,
+                    "minimum": 0,
+                    "maximum": 360
+                },
+                "depth": {
+                    "type": "number",
+                    "description": "Configured depth relative to surface (meter)",
+                    "example": 2,
+                    "minimum": 0.1,
+                    "maximum": 10
+                },
+                "x": {
+                    "type": "number",
+                    "description": "Configured f position relative to master electronics (meter)",
+                    "example": -2,
+                    "minimum": -100,
+                    "maximum": 100
+                },
+                "y": {
+                    "type": "number",
+                    "description": "Configured Y position relative to master electronics (meter)",
+                    "example": 2,
+                    "minimum": -100,
+                    "maximum": 100
+                }
+            },
+            "description": "Configuration parameters for antenna set up",
+            "example": {
+                "antenna_rotation": 90,
+                "depth": 2,
+                "x": -2,
+                "y": 2
+            },
+            "required": [
+                "x",
+                "y",
+                "depth",
+                "antenna_rotation"
+            ]
+        },
+        "ModifyConfigPayload": {
+            "title": "ModifyConfigPayload",
+            "type": "object",
+            "properties": {
+                "antenna_enabled": {
+                    "type": "boolean",
+                    "description": "Enable use of antenna",
+                    "example": true
+                },
+                "channel": {
+                    "type": "integer",
+                    "description": "Channel to use",
+                    "example": 13,
+                    "minimum": 0,
+                    "maximum": 6000
+                },
+                "compass": {
+                    "type": "string",
+                    "description": "Compass provider setting",
+                    "example": "external",
+                    "enum": [
+                        "onboard",
+                        "static",
+                        "external"
+                    ]
+                },
+                "environment": {
+                    "type": "string",
+                    "description": "[Deprecated] Environment setting",
+                    "example": "openwater",
+                    "enum": [
+                        "reflective",
+                        "openwater"
+                    ]
+                },
+                "external_pps_enabled": {
+                    "type": "boolean",
+                    "description": "Enable external PPS input to master",
+                    "example": false
+                },
+                "gps": {
+                    "type": "string",
+                    "description": "GPS provider setting",
+                    "example": "external",
+                    "enum": [
+                        "onboard",
+                        "static",
+                        "external"
+                    ]
+                },
+                "imu_vehicle_enabled": {
+                    "type": "boolean",
+                    "description": "[Deprecated] Enable IMU input from vehicle",
+                    "example": true
+                },
+                "locator_type": {
+                    "type": "string",
+                    "description": "Locator type in use",
+                    "example": "a1",
+                    "enum": [
+                        "d1",
+                        "a1",
+                        "s2",
+                        "p2",
+                        "u1"
+                    ]
+                },
+                "range_max_x": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "range_max_y": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "range_max_z": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "range_min_x": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": -50,
+                    "minimum": -100,
+                    "maximum": 0
+                },
+                "range_min_y": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": -50,
+                    "minimum": -100,
+                    "maximum": 0
+                },
+                "search_direction": {
+                    "type": "number",
+                    "description": "Direction of circular search area section",
+                    "example": 30,
+                    "minimum": 0,
+                    "maximum": 360
+                },
+                "search_radius": {
+                    "type": "number",
+                    "description": "Radius of circular search area",
+                    "example": 150,
+                    "minimum": 1,
+                    "maximum": 300
+                },
+                "search_sector": {
+                    "type": "number",
+                    "description": "Sector angle of circular search area",
+                    "example": 90,
+                    "minimum": 1,
+                    "maximum": 360
+                },
+                "speed_of_sound": {
+                    "type": "integer",
+                    "description": "Speed of sound use by the system",
+                    "example": 1475,
+                    "minimum": 1000,
+                    "maximum": 2000
+                },
+                "static_lat": {
+                    "type": "number",
+                    "description": "Latitude to use in static mode",
+                    "example": 63.422,
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "static_lon": {
+                    "type": "number",
+                    "description": "Longitude to use in static mode",
+                    "example": 10.424,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "static_orientation": {
+                    "type": "number",
+                    "description": "Orientation/compass reading to use in static mode (degrees)",
+                    "example": 42,
+                    "minimum": 0,
+                    "maximum": 359
+                }
+            },
+            "description": "Configuration parameters",
+            "example": {
+                "antenna_enabled": true,
+                "channel": 13,
+                "compass": "external",
+                "environment": "openwater",
+                "external_pps_enabled": false,
+                "gps": "external",
+                "imu_vehicle_enabled": true,
+                "locator_type": "a1",
+                "range_max_x": 50,
+                "range_max_y": 50,
+                "range_max_z": 50,
+                "range_min_x": -50,
+                "range_min_y": -50,
+                "search_direction": 30,
+                "search_radius": 150,
+                "search_sector": 90,
+                "speed_of_sound": 1475,
+                "static_lat": 63.422,
+                "static_lon": 10.424,
+                "static_orientation": 42
+            },
+            "required": [
+                "channel",
+                "locator_type",
+                "gps",
+                "compass",
+                "static_lat",
+                "static_lon",
+                "static_orientation"
+            ]
+        },
+        "ModifyIPConfigPayload": {
+            "title": "ModifyIPConfigPayload",
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "IP address to use",
+                    "example": "10.11.12.94"
+                },
+                "dhcp": {
+                    "type": "boolean",
+                    "description": "DHCP to use",
+                    "example": true
+                },
+                "dns": {
+                    "type": "string",
+                    "description": "DNS to use",
+                    "example": "10.11.12.1"
+                },
+                "gateway": {
+                    "type": "string",
+                    "description": "Gateway to use",
+                    "example": "10.11.12.1"
+                },
+                "prefix": {
+                    "type": "integer",
+                    "description": "Prefix to use",
+                    "example": 24,
+                    "minimum": 1,
+                    "maximum": 31
+                }
+            },
+            "description": "Configuration parameters",
+            "example": {
+                "address": "10.11.12.94",
+                "dhcp": true,
+                "dns": "10.11.12.1",
+                "gateway": "10.11.12.1",
+                "prefix": 24
+            },
+            "required": [
+                "address",
+                "gateway",
+                "prefix",
+                "dns",
+                "dhcp"
+            ]
+        },
+        "ModifyReceiverConfigPayload": {
+            "title": "ModifyReceiverConfigPayload",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Unique receiver identifier",
+                    "example": 2339264502380679921,
+                    "format": "int64"
+                },
+                "x": {
+                    "type": "number",
+                    "description": "Configured X position relative to master electronics (meter)",
+                    "example": 0.0158212572962501,
+                    "format": "double"
+                },
+                "y": {
+                    "type": "number",
+                    "description": "Configured Y position relative to master electronics (meter)",
+                    "example": 0.08142596921667565,
+                    "format": "double"
+                },
+                "z": {
+                    "type": "number",
+                    "description": "Configured Z position relative to master electronics (meter)",
+                    "example": 0.34617068793186784,
+                    "format": "double"
+                }
+            },
+            "description": "A receiver configuration",
+            "example": {
+                "id": 2339264502380679921,
+                "x": 0.0158212572962501,
+                "y": 0.08142596921667565,
+                "z": 0.34617068793186784
+            },
+            "required": [
+                "id",
+                "x",
+                "y",
+                "z"
+            ]
+        },
+        "ModifyWIFIConfigPayload": {
+            "title": "ModifyWIFIConfigPayload",
+            "type": "object",
+            "properties": {
+                "mode": {
+                    "type": "string",
+                    "description": "Which mode should the WiFi be in?",
+                    "example": "ap",
+                    "enum": [
+                        "ap",
+                        "client"
+                    ]
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password to use for WiFi in Client mode",
+                    "example": "10.11.12.1"
+                },
+                "ssid": {
+                    "type": "string",
+                    "description": "WIFI SSID to use for WiFi in Client mode",
+                    "example": "10.11.12.94"
+                }
+            },
+            "description": "Configuration parameters",
+            "example": {
+                "mode": "ap",
+                "password": "10.11.12.1",
+                "ssid": "10.11.12.94"
+            },
+            "required": [
+                "ssid",
+                "password",
+                "mode"
+            ]
+        },
+        "SetDepthExternalPayload": {
+            "title": "SetDepthExternalPayload",
+            "type": "object",
+            "properties": {
+                "depth": {
+                    "type": "number",
+                    "description": "Curent depth (meter)",
+                    "example": 3.2,
+                    "minimum": 0,
+                    "maximum": 500
+                },
+                "temp": {
+                    "type": "number",
+                    "description": "Current water temperature (C)",
+                    "example": 11.2,
+                    "minimum": -10,
+                    "maximum": 60
+                }
+            },
+            "description": "Current locator depth and temperature",
+            "example": {
+                "depth": 3.2,
+                "temp": 11.2
+            },
+            "required": [
+                "depth",
+                "temp"
+            ]
+        },
+        "SetMasterExternalPayload": {
+            "title": "SetMasterExternalPayload",
+            "type": "object",
+            "properties": {
+                "cog": {
+                    "type": "number",
+                    "description": "Course over ground (degrees). -1 means no data.",
+                    "example": 42,
+                    "minimum": -1,
+                    "maximum": 359.999
+                },
+                "fix_quality": {
+                    "type": "number",
+                    "description": "Fix quality. 0 if no data.",
+                    "example": 1,
+                    "minimum": 0
+                },
+                "hdop": {
+                    "type": "number",
+                    "description": "Horizontal dilution of precision. -1 means no data.",
+                    "example": 1.9,
+                    "minimum": -1
+                },
+                "lat": {
+                    "type": "number",
+                    "description": "Current Latitude",
+                    "example": 63.422,
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "lon": {
+                    "type": "number",
+                    "description": "Current Longitude",
+                    "example": 10.424,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "numsats": {
+                    "type": "number",
+                    "description": "Number of satellites. -1 means no data.",
+                    "example": 11,
+                    "minimum": -1
+                },
+                "orientation": {
+                    "type": "number",
+                    "description": "Current orientation/compass heading (degrees)",
+                    "example": 42,
+                    "minimum": 0,
+                    "maximum": 359.999
+                },
+                "sog": {
+                    "type": "number",
+                    "description": "Speed over ground (km/h). -1 means no data.",
+                    "example": 0.5,
+                    "minimum": -1
+                }
+            },
+            "description": "Global master position from external source",
+            "example": {
+                "cog": 42,
+                "fix_quality": 1,
+                "hdop": 1.9,
+                "lat": 63.422,
+                "lon": 10.424,
+                "numsats": 11,
+                "orientation": 42,
+                "sog": 0.5
+            },
+            "required": [
+                "lat",
+                "lon",
+                "orientation"
+            ]
+        },
+        "SetNorthImuPayload": {
+            "title": "SetNorthImuPayload",
+            "type": "object",
+            "properties": {
+                "heading": {
+                    "type": "number",
+                    "description": "Current heading",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 360
+                }
+            },
+            "description": "IMU set north",
+            "example": {
+                "heading": 50
+            },
+            "required": [
+                "heading"
+            ]
+        },
+        "SetOrientationExternalPayload": {
+            "title": "SetOrientationExternalPayload",
+            "type": "object",
+            "properties": {
+                "orientation": {
+                    "type": "number",
+                    "description": "Current orientation/compass heading (degrees). -1 means no orientation set",
+                    "example": 42,
+                    "minimum": -1,
+                    "maximum": 359.999
+                }
+            },
+            "description": "Set current compass heading of ROV/locator",
+            "example": {
+                "orientation": 42
+            },
+            "required": [
+                "orientation"
+            ]
+        },
+        "SetVehicleIMUExternalPayload": {
+            "title": "SetVehicleIMUExternalPayload",
+            "type": "object",
+            "properties": {
+                "pitch": {
+                    "type": "number",
+                    "description": "Current pitch of vehicle(degrees).",
+                    "example": 30,
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "roll": {
+                    "type": "number",
+                    "description": "Current roll of vehicle(degrees).",
+                    "example": -30,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "x": {
+                    "type": "number",
+                    "description": "Current acceleration in x-axis of vehicle.",
+                    "example": 10,
+                    "minimum": -20,
+                    "maximum": 20
+                },
+                "y": {
+                    "type": "number",
+                    "description": "Current acceleration in y-axis of vehicle.",
+                    "example": -10,
+                    "minimum": -20,
+                    "maximum": 20
+                },
+                "yaw": {
+                    "type": "number",
+                    "description": "Current yaw of vehicle(degrees).",
+                    "example": 30,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "z": {
+                    "type": "number",
+                    "description": "Current acceleration in z-axis of vehicle.",
+                    "example": 5,
+                    "minimum": -20,
+                    "maximum": 20
+                }
+            },
+            "description": "Set current rotation and acceleration of vehicle",
+            "example": {
+                "pitch": 30,
+                "roll": -30,
+                "x": 10,
+                "y": -10,
+                "yaw": 30,
+                "z": 5
+            },
+            "required": [
+                "pitch",
+                "roll",
+                "yaw",
+                "x",
+                "y",
+                "z"
+            ]
+        },
+        "UpdatePoiPayload": {
+            "title": "UpdatePoiPayload",
+            "type": "object",
+            "properties": {
+                "depth": {
+                    "type": "number",
+                    "description": "Depth of POI",
+                    "example": 0.9848439086783396,
+                    "format": "double"
+                },
+                "icon": {
+                    "type": "string",
+                    "description": "Icon of POI",
+                    "example": "Ut molestias laboriosam."
+                },
+                "id": {
+                    "type": "integer",
+                    "description": "Unique POI id",
+                    "example": 3408207428662661430,
+                    "format": "int64"
+                },
+                "lat": {
+                    "type": "number",
+                    "description": "Latitude of POI",
+                    "example": 0.8147274904139097,
+                    "format": "double"
+                },
+                "lng": {
+                    "type": "number",
+                    "description": "Longitude of POI",
+                    "example": 0.06472337355304676,
+                    "format": "double"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of POI",
+                    "example": "Reprehenderit non architecto quia."
+                },
+                "visible": {
+                    "type": "boolean",
+                    "description": "Visibility of POI",
+                    "example": false
+                }
+            },
+            "description": "A list of all POI",
+            "example": {
+                "depth": 0.9848439086783396,
+                "icon": "Ut molestias laboriosam.",
+                "id": 3408207428662661430,
+                "lat": 0.8147274904139097,
+                "lng": 0.06472337355304676,
+                "name": "Reprehenderit non architecto quia.",
+                "visible": false
+            },
+            "required": [
+                "name",
+                "lat",
+                "lng",
+                "depth",
+                "icon",
+                "visible"
+            ]
+        },
+        "WaterlinkedAbout": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.about+json; view=default",
+            "type": "object",
+            "properties": {
+                "chipid": {
+                    "type": "string",
+                    "description": "Chip identifier",
+                    "example": "0x123456789"
+                },
+                "hardware_revision": {
+                    "type": "integer",
+                    "description": "Hardware revision",
+                    "example": 1,
+                    "format": "int64"
+                },
+                "product_id": {
+                    "type": "integer",
+                    "description": "Product ID",
+                    "example": 1,
+                    "format": "int64"
+                },
+                "product_name": {
+                    "type": "string",
+                    "description": "Product name",
+                    "example": "Underwater GPS"
+                },
+                "variant": {
+                    "type": "string",
+                    "description": "Product variant",
+                    "example": "standard"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Detailed Web Server version string",
+                    "example": "1.0.0 (abc.def)"
+                },
+                "version_short": {
+                    "type": "string",
+                    "description": "Short Web Server version string",
+                    "example": "1.0.0"
+                }
+            },
+            "description": "About information (default view)",
+            "example": {
+                "chipid": "0x123456789",
+                "hardware_revision": 1,
+                "product_id": 1,
+                "product_name": "Underwater GPS",
+                "variant": "standard",
+                "version": "1.0.0 (abc.def)",
+                "version_short": "1.0.0"
+            },
+            "required": [
+                "version",
+                "version_short",
+                "chipid",
+                "product_name",
+                "hardware_revision",
+                "product_id",
+                "variant"
+            ]
+        },
+        "WaterlinkedAccousticPosition": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.accoustic.position+json; view=default",
+            "type": "object",
+            "properties": {
+                "position_valid": {
+                    "type": "boolean",
+                    "description": "Is current position valid or not",
+                    "example": true
+                },
+                "receiver_distance": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "example": 0.4571247391045424,
+                        "format": "double"
+                    },
+                    "description": "Measured distance to the locator for each receiver",
+                    "example": [
+                        0.4571247391045424,
+                        0.4571247391045424
+                    ]
+                },
+                "receiver_nsd": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "example": 0.748659470979663,
+                        "format": "double"
+                    },
+                    "description": "Measured NSD for each receiver",
+                    "example": [
+                        0.748659470979663,
+                        0.748659470979663
+                    ]
+                },
+                "receiver_rssi": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "example": 0.8800592996534627,
+                        "format": "double"
+                    },
+                    "description": "Measured RSSI for each receiver",
+                    "example": [
+                        0.8800592996534627,
+                        0.8800592996534627,
+                        0.8800592996534627
+                    ]
+                },
+                "receiver_valid": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "example": 0.768439233512868,
+                        "format": "double"
+                    },
+                    "description": "Is signal valid or not for each receiver",
+                    "example": [
+                        0.768439233512868,
+                        0.768439233512868
+                    ]
+                },
+                "std": {
+                    "type": "number",
+                    "description": "Current acoustic position accuracy (meter)",
+                    "example": 0.5,
+                    "minimum": 0
+                },
+                "x": {
+                    "type": "number",
+                    "description": "Current acoustic x position relative to master electronics (meter)",
+                    "example": 32.1,
+                    "format": "double"
+                },
+                "y": {
+                    "type": "number",
+                    "description": "Current acoustic y position relative to master electronics (meter)",
+                    "example": 11.2,
+                    "format": "double"
+                },
+                "z": {
+                    "type": "number",
+                    "description": "Current acoustic z position (depth) relative to master electronics (meter)",
+                    "example": 10.2,
+                    "minimum": 0
+                }
+            },
+            "description": "Current relative Locator position (default view)",
+            "example": {
+                "position_valid": true,
+                "receiver_distance": [
+                    0.4571247391045424,
+                    0.4571247391045424
+                ],
+                "receiver_nsd": [
+                    0.748659470979663,
+                    0.748659470979663
+                ],
+                "receiver_rssi": [
+                    0.8800592996534627,
+                    0.8800592996534627,
+                    0.8800592996534627
+                ],
+                "receiver_valid": [
+                    0.768439233512868,
+                    0.768439233512868
+                ],
+                "std": 0.5,
+                "x": 32.1,
+                "y": 11.2,
+                "z": 10.2
+            },
+            "required": [
+                "x",
+                "y",
+                "z",
+                "std",
+                "position_valid",
+                "receiver_distance",
+                "receiver_rssi",
+                "receiver_nsd",
+                "receiver_valid"
+            ]
+        },
+        "WaterlinkedAntenna_config": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.antenna_config+json; view=default",
+            "type": "object",
+            "properties": {
+                "antenna_rotation": {
+                    "type": "integer",
+                    "description": "Configured rotation of antenna relative to forward arrow on topside housing. Clockwise is positive direction (degrees)",
+                    "example": 90,
+                    "minimum": 0,
+                    "maximum": 360
+                },
+                "depth": {
+                    "type": "number",
+                    "description": "Configured depth relative to surface (meter)",
+                    "example": 2,
+                    "minimum": 0.1,
+                    "maximum": 10
+                },
+                "x": {
+                    "type": "number",
+                    "description": "Configured f position relative to master electronics (meter)",
+                    "example": -2,
+                    "minimum": -100,
+                    "maximum": 100
+                },
+                "y": {
+                    "type": "number",
+                    "description": "Configured Y position relative to master electronics (meter)",
+                    "example": 2,
+                    "minimum": -100,
+                    "maximum": 100
+                }
+            },
+            "description": "Configuration parameters for antenna set up (default view)",
+            "example": {
+                "antenna_rotation": 90,
+                "depth": 2,
+                "x": -2,
+                "y": 2
+            },
+            "required": [
+                "x",
+                "y",
+                "depth",
+                "antenna_rotation"
+            ]
+        },
+        "WaterlinkedConfiguration": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.configuration+json; view=default",
+            "type": "object",
+            "properties": {
+                "antenna_enabled": {
+                    "type": "boolean",
+                    "description": "Enable use of antenna",
+                    "example": true
+                },
+                "channel": {
+                    "type": "integer",
+                    "description": "Channel to use",
+                    "example": 13,
+                    "minimum": 0,
+                    "maximum": 6000
+                },
+                "compass": {
+                    "type": "string",
+                    "description": "Compass provider setting",
+                    "example": "external",
+                    "enum": [
+                        "onboard",
+                        "static",
+                        "external"
+                    ]
+                },
+                "environment": {
+                    "type": "string",
+                    "description": "[Deprecated] Environment setting",
+                    "example": "openwater",
+                    "enum": [
+                        "reflective",
+                        "openwater"
+                    ]
+                },
+                "external_pps_enabled": {
+                    "type": "boolean",
+                    "description": "Enable external PPS input to master",
+                    "example": false
+                },
+                "gps": {
+                    "type": "string",
+                    "description": "GPS provider setting",
+                    "example": "external",
+                    "enum": [
+                        "onboard",
+                        "static",
+                        "external"
+                    ]
+                },
+                "imu_vehicle_enabled": {
+                    "type": "boolean",
+                    "description": "[Deprecated] Enable IMU input from vehicle",
+                    "example": true
+                },
+                "locator_type": {
+                    "type": "string",
+                    "description": "Locator type in use",
+                    "example": "a1",
+                    "enum": [
+                        "d1",
+                        "a1",
+                        "s2",
+                        "p2",
+                        "u1"
+                    ]
+                },
+                "range_max_x": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "range_max_y": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "range_max_z": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "range_min_x": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": -50,
+                    "minimum": -100,
+                    "maximum": 0
+                },
+                "range_min_y": {
+                    "type": "number",
+                    "description": "[Deprecated] Max range (meters)",
+                    "example": -50,
+                    "minimum": -100,
+                    "maximum": 0
+                },
+                "search_direction": {
+                    "type": "number",
+                    "description": "Direction of circular search area section",
+                    "example": 30,
+                    "minimum": 0,
+                    "maximum": 360
+                },
+                "search_radius": {
+                    "type": "number",
+                    "description": "Radius of circular search area",
+                    "example": 150,
+                    "minimum": 1,
+                    "maximum": 300
+                },
+                "search_sector": {
+                    "type": "number",
+                    "description": "Sector angle of circular search area",
+                    "example": 90,
+                    "minimum": 1,
+                    "maximum": 360
+                },
+                "speed_of_sound": {
+                    "type": "integer",
+                    "description": "Speed of sound use by the system",
+                    "example": 1475,
+                    "minimum": 1000,
+                    "maximum": 2000
+                },
+                "static_lat": {
+                    "type": "number",
+                    "description": "Latitude to use in static mode",
+                    "example": 63.422,
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "static_lon": {
+                    "type": "number",
+                    "description": "Longitude to use in static mode",
+                    "example": 10.424,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "static_orientation": {
+                    "type": "number",
+                    "description": "Orientation/compass reading to use in static mode (degrees)",
+                    "example": 42,
+                    "minimum": 0,
+                    "maximum": 359
+                }
+            },
+            "description": "Configuration parameters (default view)",
+            "example": {
+                "antenna_enabled": true,
+                "channel": 13,
+                "compass": "external",
+                "environment": "openwater",
+                "external_pps_enabled": false,
+                "gps": "external",
+                "imu_vehicle_enabled": true,
+                "locator_type": "a1",
+                "range_max_x": 50,
+                "range_max_y": 50,
+                "range_max_z": 50,
+                "range_min_x": -50,
+                "range_min_y": -50,
+                "search_direction": 30,
+                "search_radius": 150,
+                "search_sector": 90,
+                "speed_of_sound": 1475,
+                "static_lat": 63.422,
+                "static_lon": 10.424,
+                "static_orientation": 42
+            },
+            "required": [
+                "channel",
+                "locator_type",
+                "gps",
+                "compass",
+                "static_lat",
+                "static_lon",
+                "static_orientation"
+            ]
+        },
+        "WaterlinkedImu": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.imu+json; view=default",
+            "type": "object",
+            "properties": {
+                "pitch": {
+                    "type": "number",
+                    "description": "Pitch",
+                    "example": 0,
+                    "minimum": 0,
+                    "maximum": 360
+                },
+                "progress": {
+                    "type": "integer",
+                    "description": "Calibration progress",
+                    "example": 50,
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "roll": {
+                    "type": "number",
+                    "description": "Roll",
+                    "example": 0,
+                    "minimum": 0,
+                    "maximum": 360
+                },
+                "state": {
+                    "type": "integer",
+                    "description": "IMU calibration state. 0=running, 1=calibrating",
+                    "example": 0,
+                    "minimum": 0,
+                    "maximum": 3
+                },
+                "yaw": {
+                    "type": "number",
+                    "description": "Yaw",
+                    "example": 0,
+                    "minimum": 0,
+                    "maximum": 360
+                }
+            },
+            "description": "IMU status and orientation information (default view)",
+            "example": {
+                "pitch": 0,
+                "progress": 50,
+                "roll": 0,
+                "state": 0,
+                "yaw": 0
+            },
+            "required": [
+                "roll",
+                "pitch",
+                "yaw",
+                "state",
+                "progress"
+            ]
+        },
+        "WaterlinkedIp_config": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.ip_config+json; view=default",
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "IP address to use",
+                    "example": "10.11.12.94"
+                },
+                "dhcp": {
+                    "type": "boolean",
+                    "description": "DHCP to use",
+                    "example": true
+                },
+                "dns": {
+                    "type": "string",
+                    "description": "DNS to use",
+                    "example": "10.11.12.1"
+                },
+                "gateway": {
+                    "type": "string",
+                    "description": "Gateway to use",
+                    "example": "10.11.12.1"
+                },
+                "prefix": {
+                    "type": "integer",
+                    "description": "Prefix to use",
+                    "example": 24,
+                    "minimum": 1,
+                    "maximum": 31
+                }
+            },
+            "description": "Configuration parameters (default view)",
+            "example": {
+                "address": "10.11.12.94",
+                "dhcp": true,
+                "dns": "10.11.12.1",
+                "gateway": "10.11.12.1",
+                "prefix": 24
+            },
+            "required": [
+                "address",
+                "gateway",
+                "prefix",
+                "dns",
+                "dhcp"
+            ]
+        },
+        "WaterlinkedOperation_response": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.operation_response+json; view=default",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "description": "Error if it occurs",
+                    "example": "something went wrong"
+                },
+                "success": {
+                    "type": "boolean",
+                    "description": "Status of operation",
+                    "example": false
+                }
+            },
+            "description": "Response from server on operations performed (default view)",
+            "example": {
+                "error": "something went wrong",
+                "success": false
+            },
+            "required": [
+                "success"
+            ]
+        },
+        "WaterlinkedPoi": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.poi+json; view=default",
+            "type": "object",
+            "properties": {
+                "depth": {
+                    "type": "number",
+                    "description": "Depth of POI",
+                    "example": 0.9848439086783396,
+                    "format": "double"
+                },
+                "icon": {
+                    "type": "string",
+                    "description": "Icon of POI",
+                    "example": "Ut molestias laboriosam."
+                },
+                "id": {
+                    "type": "integer",
+                    "description": "Unique POI id",
+                    "example": 3408207428662661430,
+                    "format": "int64"
+                },
+                "lat": {
+                    "type": "number",
+                    "description": "Latitude of POI",
+                    "example": 0.8147274904139097,
+                    "format": "double"
+                },
+                "lng": {
+                    "type": "number",
+                    "description": "Longitude of POI",
+                    "example": 0.06472337355304676,
+                    "format": "double"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of POI",
+                    "example": "Reprehenderit non architecto quia."
+                },
+                "visible": {
+                    "type": "boolean",
+                    "description": "Visibility of POI",
+                    "example": false
+                }
+            },
+            "description": "A list of all POI (default view)",
+            "example": {
+                "depth": 0.9848439086783396,
+                "icon": "Ut molestias laboriosam.",
+                "id": 3408207428662661430,
+                "lat": 0.8147274904139097,
+                "lng": 0.06472337355304676,
+                "name": "Reprehenderit non architecto quia.",
+                "visible": false
+            },
+            "required": [
+                "name",
+                "lat",
+                "lng",
+                "depth",
+                "icon",
+                "visible"
+            ]
+        },
+        "WaterlinkedPoiCollection": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.poi+json; type=collection; view=default",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/WaterlinkedPoi"
+            },
+            "description": "WaterlinkedPoiCollection is the media type for an array of WaterlinkedPoi (default view)",
+            "example": [
+                {
+                    "depth": 0.9848439086783396,
+                    "icon": "Ut molestias laboriosam.",
+                    "id": 3408207428662661430,
+                    "lat": 0.8147274904139097,
+                    "lng": 0.06472337355304676,
+                    "name": "Reprehenderit non architecto quia.",
+                    "visible": false
+                },
+                {
+                    "depth": 0.9848439086783396,
+                    "icon": "Ut molestias laboriosam.",
+                    "id": 3408207428662661430,
+                    "lat": 0.8147274904139097,
+                    "lng": 0.06472337355304676,
+                    "name": "Reprehenderit non architecto quia.",
+                    "visible": false
+                }
+            ]
+        },
+        "WaterlinkedReceiver": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.receiver+json; view=default",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Unique receiver identifier",
+                    "example": 2339264502380679921,
+                    "format": "int64"
+                },
+                "x": {
+                    "type": "number",
+                    "description": "Configured X position relative to master electronics (meter)",
+                    "example": 0.0158212572962501,
+                    "format": "double"
+                },
+                "y": {
+                    "type": "number",
+                    "description": "Configured Y position relative to master electronics (meter)",
+                    "example": 0.08142596921667565,
+                    "format": "double"
+                },
+                "z": {
+                    "type": "number",
+                    "description": "Configured Z position relative to master electronics (meter)",
+                    "example": 0.34617068793186784,
+                    "format": "double"
+                }
+            },
+            "description": "A receiver configuration (default view)",
+            "example": {
+                "id": 2339264502380679921,
+                "x": 0.0158212572962501,
+                "y": 0.08142596921667565,
+                "z": 0.34617068793186784
+            },
+            "required": [
+                "id",
+                "x",
+                "y",
+                "z"
+            ]
+        },
+        "WaterlinkedReceiverCollection": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.receiver+json; type=collection; view=default",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/WaterlinkedReceiver"
+            },
+            "description": "WaterlinkedReceiverCollection is the media type for an array of WaterlinkedReceiver (default view)",
+            "example": [
+                {
+                    "id": 2339264502380679921,
+                    "x": 0.0158212572962501,
+                    "y": 0.08142596921667565,
+                    "z": 0.34617068793186784
+                },
+                {
+                    "id": 2339264502380679921,
+                    "x": 0.0158212572962501,
+                    "y": 0.08142596921667565,
+                    "z": 0.34617068793186784
+                },
+                {
+                    "id": 2339264502380679921,
+                    "x": 0.0158212572962501,
+                    "y": 0.08142596921667565,
+                    "z": 0.34617068793186784
+                }
+            ]
+        },
+        "WaterlinkedStatus": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.status+json; view=default",
+            "type": "object",
+            "properties": {
+                "battery": {
+                    "type": "integer",
+                    "description": "Locator battery level in percent. -1 if not available or applicable",
+                    "example": 90,
+                    "minimum": -1,
+                    "maximum": 100
+                },
+                "gps": {
+                    "type": "integer",
+                    "description": "GPS lock status",
+                    "example": 2,
+                    "minimum": 0,
+                    "maximum": 3
+                },
+                "imu": {
+                    "type": "integer",
+                    "description": "IMU calibration status",
+                    "example": 2,
+                    "minimum": 0,
+                    "maximum": 3
+                }
+            },
+            "description": "Status information (default view)",
+            "example": {
+                "battery": 90,
+                "gps": 2,
+                "imu": 2
+            },
+            "required": [
+                "imu",
+                "gps",
+                "battery"
+            ]
+        },
+        "WaterlinkedTemperature": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.temperature+json; view=default",
+            "type": "object",
+            "properties": {
+                "board": {
+                    "type": "number",
+                    "description": "Board temperature (C)",
+                    "example": 37,
+                    "format": "double"
+                },
+                "water": {
+                    "type": "number",
+                    "description": "Water temperature (C)",
+                    "example": 10,
+                    "format": "double"
+                }
+            },
+            "description": "Temperature information (default view)",
+            "example": {
+                "board": 37,
+                "water": 10
+            },
+            "required": [
+                "board",
+                "water"
+            ]
+        },
+        "WaterlinkedWifi_config": {
+            "title": "Mediatype identifier: application/vnd.waterlinked.wifi_config+json; view=default",
+            "type": "object",
+            "properties": {
+                "mode": {
+                    "type": "string",
+                    "description": "Which mode should the WiFi be in?",
+                    "example": "ap",
+                    "enum": [
+                        "ap",
+                        "client"
+                    ]
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password to use for WiFi in Client mode",
+                    "example": "10.11.12.1"
+                },
+                "ssid": {
+                    "type": "string",
+                    "description": "WIFI SSID to use for WiFi in Client mode",
+                    "example": "10.11.12.94"
+                }
+            },
+            "description": "Configuration parameters (default view)",
+            "example": {
+                "mode": "ap",
+                "password": "10.11.12.1",
+                "ssid": "10.11.12.94"
+            },
+            "required": [
+                "ssid",
+                "password",
+                "mode"
+            ]
+        },
+        "WlExternalLocatorOrientation": {
+            "title": "Mediatype identifier: application/vnd.wl.external.locator.orientation+json; view=default",
+            "type": "object",
+            "properties": {
+                "orientation": {
+                    "type": "number",
+                    "description": "Current orientation/compass heading (degrees). -1 means no orientation set",
+                    "example": 42,
+                    "minimum": -1,
+                    "maximum": 359.999
+                }
+            },
+            "description": "Set current compass heading of ROV/locator (default view)",
+            "example": {
+                "orientation": 42
+            },
+            "required": [
+                "orientation"
+            ]
+        },
+        "WlExternalVehicleImu": {
+            "title": "Mediatype identifier: application/vnd.wl.external.vehicle.imu+json; view=default",
+            "type": "object",
+            "properties": {
+                "pitch": {
+                    "type": "number",
+                    "description": "Current pitch of vehicle(degrees).",
+                    "example": 30,
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "roll": {
+                    "type": "number",
+                    "description": "Current roll of vehicle(degrees).",
+                    "example": -30,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "x": {
+                    "type": "number",
+                    "description": "Current acceleration in x-axis of vehicle.",
+                    "example": 10,
+                    "minimum": -20,
+                    "maximum": 20
+                },
+                "y": {
+                    "type": "number",
+                    "description": "Current acceleration in y-axis of vehicle.",
+                    "example": -10,
+                    "minimum": -20,
+                    "maximum": 20
+                },
+                "yaw": {
+                    "type": "number",
+                    "description": "Current yaw of vehicle(degrees).",
+                    "example": 30,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "z": {
+                    "type": "number",
+                    "description": "Current acceleration in z-axis of vehicle.",
+                    "example": 5,
+                    "minimum": -20,
+                    "maximum": 20
+                }
+            },
+            "description": "Set current rotation and acceleration of vehicle (default view)",
+            "example": {
+                "pitch": 30,
+                "roll": -30,
+                "x": 10,
+                "y": -10,
+                "yaw": 30,
+                "z": 5
+            },
+            "required": [
+                "pitch",
+                "roll",
+                "yaw",
+                "x",
+                "y",
+                "z"
+            ]
+        },
+        "WlSatellitePosition": {
+            "title": "Mediatype identifier: application/vnd.wl.satellite.position+json; view=default",
+            "type": "object",
+            "properties": {
+                "cog": {
+                    "type": "number",
+                    "description": "Course over ground (degrees). -1 means no data.",
+                    "example": 42,
+                    "minimum": -1,
+                    "maximum": 359.999
+                },
+                "fix_quality": {
+                    "type": "number",
+                    "description": "Fix quality. 0 if no data.",
+                    "example": 1,
+                    "minimum": 0
+                },
+                "hdop": {
+                    "type": "number",
+                    "description": "Horizontal dilution of precision. -1 means no data.",
+                    "example": 1.9,
+                    "minimum": -1
+                },
+                "lat": {
+                    "type": "number",
+                    "description": "Current Latitude",
+                    "example": 63.422,
+                    "minimum": -90,
+                    "maximum": 90
+                },
+                "lon": {
+                    "type": "number",
+                    "description": "Current Longitude",
+                    "example": 10.424,
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "numsats": {
+                    "type": "number",
+                    "description": "Number of satellites. -1 means no data.",
+                    "example": 11,
+                    "minimum": -1
+                },
+                "orientation": {
+                    "type": "number",
+                    "description": "Current orientation/compass heading (degrees). -1 means no data.",
+                    "example": 42,
+                    "minimum": -1,
+                    "maximum": 359.999
+                },
+                "sog": {
+                    "type": "number",
+                    "description": "Speed over ground (km/h). -1 means no data.",
+                    "example": 0.5,
+                    "minimum": -1
+                }
+            },
+            "description": "GPS and IMU position (default view)",
+            "example": {
+                "cog": 42,
+                "fix_quality": 1,
+                "hdop": 1.9,
+                "lat": 63.422,
+                "lon": 10.424,
+                "numsats": 11,
+                "orientation": 42,
+                "sog": 0.5
+            },
+            "required": [
+                "lat",
+                "lon",
+                "orientation",
+                "cog",
+                "sog",
+                "hdop",
+                "numsats",
+                "fix_quality"
+            ]
+        },
+        "WlStatusGroup": {
+            "title": "Mediatype identifier: application/vnd.wl.status.group+json; view=default",
+            "type": "object",
+            "properties": {
+                "error_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "example": "Quasi itaque nemo dolorem ea molestias."
+                    },
+                    "description": "Identifiers for warnings/errors",
+                    "example": [
+                        "Quasi itaque nemo dolorem ea molestias.",
+                        "Quasi itaque nemo dolorem ea molestias.",
+                        "Quasi itaque nemo dolorem ea molestias."
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message",
+                    "example": "Nihil sit qui."
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Status",
+                    "example": "warning",
+                    "enum": [
+                        "ok",
+                        "warning",
+                        "error"
+                    ]
+                },
+                "status_group": {
+                    "type": "string",
+                    "description": "Status group friendly name",
+                    "example": "Temporibus omnis dolor saepe quam."
+                },
+                "status_group_id": {
+                    "type": "string",
+                    "description": "Status group identifier",
+                    "example": "Distinctio qui."
+                }
+            },
+            "description": "Current status from one specific status group (default view)",
+            "example": {
+                "error_ids": [
+                    "Quasi itaque nemo dolorem ea molestias.",
+                    "Quasi itaque nemo dolorem ea molestias.",
+                    "Quasi itaque nemo dolorem ea molestias."
+                ],
+                "message": "Nihil sit qui.",
+                "status": "warning",
+                "status_group": "Temporibus omnis dolor saepe quam.",
+                "status_group_id": "Distinctio qui."
+            },
+            "required": [
+                "status_group",
+                "status_group_id",
+                "status",
+                "message",
+                "error_ids"
+            ]
+        },
+        "WlStatusGroupCollection": {
+            "title": "Mediatype identifier: application/vnd.wl.status.group+json; type=collection; view=default",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/WlStatusGroup"
+            },
+            "description": "WlStatusGroupCollection is the media type for an array of WlStatusGroup (default view)",
+            "example": [
+                {
+                    "error_ids": [
+                        "Quasi itaque nemo dolorem ea molestias.",
+                        "Quasi itaque nemo dolorem ea molestias.",
+                        "Quasi itaque nemo dolorem ea molestias."
+                    ],
+                    "message": "Nihil sit qui.",
+                    "status": "warning",
+                    "status_group": "Temporibus omnis dolor saepe quam.",
+                    "status_group_id": "Distinctio qui."
+                },
+                {
+                    "error_ids": [
+                        "Quasi itaque nemo dolorem ea molestias.",
+                        "Quasi itaque nemo dolorem ea molestias.",
+                        "Quasi itaque nemo dolorem ea molestias."
+                    ],
+                    "message": "Nihil sit qui.",
+                    "status": "warning",
+                    "status_group": "Temporibus omnis dolor saepe quam.",
+                    "status_group_id": "Distinctio qui."
+                }
+            ]
+        },
+        "WlWarning": {
+            "title": "Mediatype identifier: application/vnd.wl.warning+json; view=default",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Identifier",
+                    "example": "Cupiditate et laboriosam."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message",
+                    "example": "Non illo dolor illo facilis nihil nemo."
+                },
+                "severity": {
+                    "type": "string",
+                    "description": "Severity",
+                    "example": "Facilis sed animi distinctio praesentium."
+                }
+            },
+            "description": "Warning message (default view)",
+            "example": {
+                "id": "Cupiditate et laboriosam.",
+                "message": "Non illo dolor illo facilis nihil nemo.",
+                "severity": "Facilis sed animi distinctio praesentium."
+            },
+            "required": [
+                "id",
+                "message",
+                "severity"
+            ]
+        },
+        "WlWarningCollection": {
+            "title": "Mediatype identifier: application/vnd.wl.warning+json; type=collection; view=default",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/WlWarning"
+            },
+            "description": "WlWarningCollection is the media type for an array of WlWarning (default view)",
+            "example": [
+                {
+                    "id": "Cupiditate et laboriosam.",
+                    "message": "Non illo dolor illo facilis nihil nemo.",
+                    "severity": "Facilis sed animi distinctio praesentium."
+                },
+                {
+                    "id": "Cupiditate et laboriosam.",
+                    "message": "Non illo dolor illo facilis nihil nemo.",
+                    "severity": "Facilis sed animi distinctio praesentium."
+                }
+            ]
+        },
+        "WupdaterApiversion": {
+            "title": "Mediatype identifier: application/vnd.wupdater.apiversion; view=default",
+            "type": "object",
+            "properties": {
+                "versions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "example": "Dicta rem tenetur commodi eum."
+                    },
+                    "description": "Supported api versions",
+                    "example": [
+                        "v1",
+                        "v2"
+                    ]
+                }
+            },
+            "description": "Returns supported api versions (default view)",
+            "example": {
+                "versions": [
+                    "v1",
+                    "v2"
+                ]
+            },
+            "required": [
+                "versions"
+            ]
+        },
+        "error": {
+            "title": "Mediatype identifier: application/vnd.goa.error; view=default",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "an application-specific error code, expressed as a string value.",
+                    "example": "invalid_value"
+                },
+                "detail": {
+                    "type": "string",
+                    "description": "a human-readable explanation specific to this occurrence of the problem.",
+                    "example": "Value of ID must be an integer"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "a unique identifier for this particular occurrence of the problem.",
+                    "example": "3F1FKVRR"
+                },
+                "meta": {
+                    "type": "object",
+                    "description": "a meta object containing non-standard meta-information about the error.",
+                    "example": {
+                        "timestamp": 1458609066
+                    },
+                    "additionalProperties": true
+                },
+                "status": {
+                    "type": "string",
+                    "description": "the HTTP status code applicable to this problem, expressed as a string value.",
+                    "example": "400"
+                }
+            },
+            "description": "Error response media type (default view)",
+            "example": {
+                "code": "invalid_value",
+                "detail": "Value of ID must be an integer",
+                "id": "3F1FKVRR",
+                "meta": {
+                    "timestamp": 1458609066
+                },
+                "status": "400"
+            }
+        }
+    },
+    "responses": {
+        "BadRequest": {
+            "description": "Bad Request"
+        },
+        "Conflict": {
+            "description": "Conflict"
+        },
+        "Forbidden": {
+            "description": "Forbidden"
+        },
+        "InternalServerError": {
+            "description": "Internal Server Error"
+        },
+        "NoContent": {
+            "description": "No Content"
+        },
+        "NotFound": {
+            "description": "Not Found"
+        },
+        "OK": {
+            "description": "OK"
+        },
+        "RequestTimeout": {
+            "description": "Request Timeout"
+        },
+        "ServiceUnavailable": {
+            "description": "Service Unavailable"
+        }
+    }
+}
