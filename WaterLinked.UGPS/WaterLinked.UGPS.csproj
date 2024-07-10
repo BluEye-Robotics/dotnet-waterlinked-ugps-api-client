@@ -4,7 +4,7 @@
     <RootNamespace>WaterLinked.UPGS</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>WaterLinked.UGPS</PackageId>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>Jonas Follesø</Authors>
     <Company>Blueye Robotics AS</Company>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
@@ -12,15 +12,18 @@
     <RepositoryUrl>https://github.com/BluEye-Robotics/dotnet-waterlinked-ugps-api-client</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <OpenApiReference
       Include="WaterLinkedUGPSApi.json"
       SourceUrl="https://demo.waterlinked.com/swagger/swagger.json">
       <Namespace>WaterLinked.UGPS</Namespace>
-      <Options>/operationGenerationMode:SingleClientFromPathSegments /generateDataAnnotations:false /generateClientInterfaces:true /propertyNameGeneratorType:CSharpPropertyNameGenerator</Options>
+      <Options>/operationGenerationMode:SingleClientFromPathSegments /generateDataAnnotations:false /generateClientInterfaces:true</Options>
     </OpenApiReference>
   </ItemGroup>
 </Project>
